@@ -1,0 +1,47 @@
+{
+  "name": "@gobob/utils",
+  "version": "0.0.0",
+  "description": "Bob UI library.",
+  "homepage": "https://github.com/bob-collective/bob-ui#readme",
+  "license": "MIT",
+  "keywords": [
+    "bob",
+    "utils"
+  ],
+  "main": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bob-collective/bob-ui.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/bob-collective/bob-ui/issues"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "clean": "rimraf dist .turbo",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "react": "^18.2.0",
+    "@gobob/types": "workspace:^",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@gobob/bob-sdk": "^1.1.1",
+    "@gobob/wagmi": "workspace:^",
+    "bitcoinjs-lib": "^6.1.5"
+  }
+}

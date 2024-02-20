@@ -1,0 +1,98 @@
+name: QA
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    if: false
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install
+        uses: ./.github/common-actions/install
+
+      - name: Run tests
+        run: pnpm test
+
+  eslint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install
+        uses: ./.github/common-actions/install
+
+      - name: Run ESLint
+        run: pnpm lint
+
+  types:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install
+        uses: ./.github/common-actions/install
+
+      - name: Run typecheck
+        run: pnpm typecheck
+
+  prettier:
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install
+        uses: ./.github/common-actions/install
+
+      - name: Run prettier
+        run: pnpm format:check
+
+  e2e:
+    name: E2E
+    runs-on: ubuntu-latest
+    if: false
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install
+        uses: ./.github/common-actions/install
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@248bde77443c376edc45906ede03a1aba9da0462 # pin@v5.8.4
+        with:
+          start: pnpm start:bridge --host
+          command: pnpm test:e2e:ci # TODO: consider running in --headless
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          browser: chrome
+          spec: tests/e2e/specs/*
+        env:
+          SECRET_WORDS: 'test test test test test test test test test test test junk'
+          NETWORK_NAME: bob
+          RPC_URL: 'https://l2-fluffy-bob-7mjgi9pmtg.t.conduit.xyz'
+          CHAIN_ID: 901
+          SYMBOL: ETH
+          BLOCK_EXPLORER: 'https://explorerl2-fluffy-bob-7mjgi9pmtg.t.conduit.xyz'
+
+      - name: Archive e2e artifacts
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # pin@v2
+        if: always()
+        with:
+          name: e2e-artifacts
+          path: |
+            apps/e2e/tests/e2e/videos
+            apps/e2e/tests/e2e/screenshots
+        continue-on-error: true

@@ -1,0 +1,9 @@
+name: "Task"
+description: "Add a task"
+body:
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "Description"
+    validations:
+      required: true
