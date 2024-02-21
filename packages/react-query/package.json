@@ -16,7 +16,7 @@
   ],
   "sideEffects": false,
   "publishConfig": {
-    "access": "private"
+    "access": "public"
   },
   "repository": {
     "type": "git",
