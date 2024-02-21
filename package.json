@@ -4,7 +4,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bob-collective/bob-ui"
+    "url": "https://github.com/bob-collective/sats-wagmi"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",

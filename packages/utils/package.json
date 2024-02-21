@@ -1,8 +1,8 @@
 {
   "name": "@gobob/utils",
   "version": "0.0.0",
-  "description": "Bob UI library.",
-  "homepage": "https://github.com/bob-collective/bob-ui#readme",
+  "description": "Bob utils.",
+  "homepage": "https://github.com/bob-collective/sats-wagmi#readme",
   "license": "MIT",
   "keywords": [
     "bob",
@@ -18,11 +18,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bob-collective/bob-ui.git",
-    "directory": "packages/components"
+    "url": "git+https://github.com/bob-collective/sats-wagmi.git",
+    "directory": "packages/utils"
   },
   "bugs": {
-    "url": "https://github.com/bob-collective/bob-ui/issues"
+    "url": "https://github.com/bob-collective/sats-wagmi/issues"
   },
   "scripts": {
     "lint": "eslint .",
