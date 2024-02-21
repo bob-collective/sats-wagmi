@@ -41,7 +41,8 @@
   },
   "devDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "clean-package": "^2.2.0"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.36.1"

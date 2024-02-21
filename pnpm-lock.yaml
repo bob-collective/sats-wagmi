@@ -187,6 +187,9 @@ importers:
         specifier: ^4.36.1
         version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
+      clean-package:
+        specifier: ^2.2.0
+        version: 2.2.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -261,6 +264,9 @@ importers:
         specifier: ^6.1.5
         version: 6.1.5
     devDependencies:
+      clean-package:
+        specifier: ^2.2.0
+        version: 2.2.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -280,6 +286,9 @@ importers:
       '@gobob/types':
         specifier: workspace:^
         version: link:../types
+      clean-package:
+        specifier: ^2.2.0
+        version: 2.2.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
