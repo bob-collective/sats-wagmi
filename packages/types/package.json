@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "@gobob/bob-sdk": "^1.1.1",
-    "@gobob/wagmi": "workspace:^",
     "bitcoinjs-lib": "^6.1.5"
   }
 }
