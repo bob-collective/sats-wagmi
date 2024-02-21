@@ -1,6 +1,6 @@
 {
   "name": "@gobob/react-query",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Bob UI React Query",
   "homepage": "https://github.com/bob-collective/sats-wagmi#readme",
   "license": "MIT",
