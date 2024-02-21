@@ -28,7 +28,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "clean": "rimraf dist .turbo",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "tsup src/index.ts --dts",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -41,5 +44,6 @@
   "dependencies": {
     "@gobob/bob-sdk": "^1.1.1",
     "bitcoinjs-lib": "^6.1.5"
-  }
+  },
+  "clean-package": "../../clean-package.config.json"
 }
