@@ -88,8 +88,8 @@ importers:
         specifier: ^6.6.0
         version: 6.21.0(eslint@8.56.0)(typescript@5.3.3)
       commitlint-plugin-function-rules:
-        specifier: ^2.0.2
-        version: 2.0.2(@commitlint/lint@17.8.1)
+        specifier: ^3.1.0
+        version: 3.1.0(@commitlint/lint@17.8.1)
       cypress:
         specifier: 12.17.3
         version: 12.17.3
@@ -7919,11 +7919,11 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /commitlint-plugin-function-rules@2.0.2(@commitlint/lint@17.8.1):
-    resolution: {integrity: sha512-SZIn5H3pTzZo1wlef17lYeduFDUHklvtYW9+jFs3uoXkezLbxTN13CrV9g2I9NRc9bhrW8RdkOesV2dZA224sg==}
-    engines: {node: '>=16'}
+  /commitlint-plugin-function-rules@3.1.0(@commitlint/lint@17.8.1):
+    resolution: {integrity: sha512-K44912/g7ZZ0bEawrsJTn3giDEwDn6T18g/UcimUblv8hcSIoIxMX5uk6LY+uYO9cb/+3Suilbp7XoxP53Nk9g==}
+    engines: {node: '>=18'}
     peerDependencies:
-      '@commitlint/lint': '>=9.1.2 <18'
+      '@commitlint/lint': '>=9.1.2 <19'
     dependencies:
       '@commitlint/lint': 17.8.1
     dev: true
