@@ -71,7 +71,7 @@ jobs:
         uses: ./.github/common-actions/install
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@248bde77443c376edc45906ede03a1aba9da0462 # pin@v5.8.4
+        uses: cypress-io/github-action@1b70233146622b69e789ccdd4f9452adc638d25a # pin@v6.6.1
         with:
           start: pnpm start:bridge --host
           command: pnpm test:e2e:ci # TODO: consider running in --headless
