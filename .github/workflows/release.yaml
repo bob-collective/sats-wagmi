@@ -21,6 +21,8 @@ jobs:
 
       - name: Install
         uses: ./.github/common-actions/install
+        with:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
       - name: Build
         run: pnpm build
