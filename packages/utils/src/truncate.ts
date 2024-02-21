@@ -1,4 +1,4 @@
-import { Address } from '@gobob/wagmi';
+type Address = `0x${string}`;
 
 const truncateBtcAddress = (address: string) => address.slice(0, 6) + '...' + address.slice(-6);
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "interlay/ui" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "bob-collective/sats-wagmi" }],
   "commit": false,
   "fixed": [],
   "linked": [],

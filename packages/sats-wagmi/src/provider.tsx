@@ -27,15 +27,17 @@ const useSatsWagmi = (): SatsConfigData => {
   return context;
 };
 
-const queryClient = new QueryClient();
-
 type SatsWagmiConfigProps = {
   children: ReactNode;
   network?: BitcoinNetwork;
   queryClient?: QueryClient;
 };
 
-const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = 'mainnet', queryClient: queryClientProp }) => {
+const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({
+  children,
+  network = 'mainnet',
+  queryClient = new QueryClient()
+}) => {
   const [connectors, setConnectors] = useState<SatsConnector[]>([]);
   const [connector, setCurrentConnector] = useState<SatsConnector>();
 
@@ -72,7 +74,7 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = 'mainne
   }, []);
 
   return (
-    <QueryClientProvider client={queryClientProp || queryClient}>
+    <QueryClientProvider client={queryClient}>
       <StatsWagmiContext.Provider value={{ connectors, connector, setConnector }}>
         {children}
       </StatsWagmiContext.Provider>
