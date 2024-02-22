@@ -39,11 +39,11 @@
   },
   "devDependencies": {
     "react": "^18.2.0",
-    "@gobob/types": "workspace:^",
     "react-dom": "^18.2.0",
     "clean-package": "^2.2.0"
   },
   "dependencies": {
+    "@gobob/types": "workspace:^",
     "@gobob/bob-sdk": "^1.1.1",
     "bitcoinjs-lib": "^6.1.5"
   },

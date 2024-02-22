@@ -208,6 +208,9 @@ importers:
       '@gobob/react-query':
         specifier: workspace:^
         version: link:../react-query
+      '@gobob/types':
+        specifier: workspace:^
+        version: link:../types
       '@gobob/utils':
         specifier: workspace:^
         version: link:../utils
@@ -236,9 +239,6 @@ importers:
         specifier: ^1.4.1
         version: 1.4.13(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(viem@1.21.4)
     devDependencies:
-      '@gobob/types':
-        specifier: workspace:^
-        version: link:../types
       '@types/async-retry':
         specifier: ^1.4.8
         version: 1.4.8
@@ -279,13 +279,13 @@ importers:
       '@gobob/bob-sdk':
         specifier: ^1.1.1
         version: 1.1.1
+      '@gobob/types':
+        specifier: workspace:^
+        version: link:../types
       bitcoinjs-lib:
         specifier: ^6.1.5
         version: 6.1.5
     devDependencies:
-      '@gobob/types':
-        specifier: workspace:^
-        version: link:../types
       clean-package:
         specifier: ^2.2.0
         version: 2.2.0
