@@ -1,5 +1,14 @@
 # @gobob/utils
 
+## 0.0.2
+
+### Patch Changes
+
+- [#15](https://github.com/bob-collective/sats-wagmi/pull/15) [`19b6721383119fd533396e3f4d154d2e67f8b744`](https://github.com/bob-collective/sats-wagmi/commit/19b6721383119fd533396e3f4d154d2e67f8b744) Thanks [@danielsimao](https://github.com/danielsimao)! - chore: add missing tsup config
+
+- Updated dependencies [[`19b6721383119fd533396e3f4d154d2e67f8b744`](https://github.com/bob-collective/sats-wagmi/commit/19b6721383119fd533396e3f4d154d2e67f8b744)]:
+  - @gobob/types@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes
