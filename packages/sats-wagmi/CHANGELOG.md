@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.0.3
+
+### Patch Changes
+
+- [#17](https://github.com/bob-collective/sats-wagmi/pull/17) [`c0491615a62352ec39b16a3df144241164b2083a`](https://github.com/bob-collective/sats-wagmi/commit/c0491615a62352ec39b16a3df144241164b2083a) Thanks [@tomjeatt](https://github.com/tomjeatt)! - chore: change snap id
+
 ## 0.0.2
 
 ### Patch Changes
