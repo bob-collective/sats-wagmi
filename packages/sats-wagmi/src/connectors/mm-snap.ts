@@ -68,7 +68,7 @@ declare global {
 
 const { ethereum } = window;
 
-const snapId = 'npm:@gobob/btcsnap';
+const snapId = 'npm:@gobob/bob-snap';
 
 class MMSnapConnector extends SatsConnector {
   id = 'metamask_snap';
