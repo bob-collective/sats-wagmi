@@ -71,7 +71,7 @@ jobs:
         uses: ./.github/common-actions/install
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@1b70233146622b69e789ccdd4f9452adc638d25a # pin@v6.6.1
+        uses: cypress-io/github-action@8d3918616d8ac34caa2b49afc8b408b6a872a6f5 # pin@v6.7.1
         with:
           start: pnpm start:bridge --host
           command: pnpm test:e2e:ci # TODO: consider running in --headless
@@ -88,7 +88,7 @@ jobs:
           BLOCK_EXPLORER: 'https://explorerl2-fluffy-bob-7mjgi9pmtg.t.conduit.xyz'
 
       - name: Archive e2e artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # pin@v2
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # pin@v2
         if: always()
         with:
           name: e2e-artifacts
