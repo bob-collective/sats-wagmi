@@ -1,3 +1,6 @@
+# Archived: Please use https://github.com/bob-collective/ui/tree/main/packages/sats-wagmi for the latest version of sats-wagmi.
+
+
 <p align="center">
       <h1 align="center">Sats-Wagmi</h1>
 </p>
