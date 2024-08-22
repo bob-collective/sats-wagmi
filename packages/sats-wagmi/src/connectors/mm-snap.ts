@@ -1,18 +1,29 @@
 import * as ecc from '@bitcoin-js/tiny-secp256k1-asmjs';
-import { DefaultElectrsClient } from '@gobob/bob-sdk';
 import { MetaMaskInpageProvider } from '@metamask/providers';
 import { BIP32Factory } from 'bip32';
 import * as bitcoin from 'bitcoinjs-lib';
 import { Psbt } from 'bitcoinjs-lib';
 import bs58check from 'bs58check';
-import { estimateTxSize, findUtxoForInscriptionId, findUtxosWithoutInscriptions } from '@gobob/utils';
+import { base64, hex } from '@scure/base';
 /* @ts-ignore */
-import coinSelect from 'coinselect';
 
-import { BitcoinScriptType, WalletNetwork } from '../types';
+import { WalletNetwork } from '../types';
 import { SnapError } from '../utils';
 
-import { SatsConnector } from './base';
+import { PsbtInputAccounts, SatsConnector } from './base';
+
+const getLibNetwork = (network: Network): WalletNetwork => {
+  switch (network) {
+    case 'main':
+      return 'mainnet';
+    case 'test':
+      return 'testnet';
+  }
+};
+
+export enum BitcoinScriptType {
+  P2WPKH = 'P2WPKH'
+}
 
 const getSnapNetwork = (network: WalletNetwork): Network => {
   switch (network) {
@@ -49,8 +60,14 @@ function addressFromExtPubKey(xyzpub: string, network: bitcoin.Network) {
   return bitcoin.payments.p2wpkh({ pubkey, network }).address;
 }
 
-const DEFAULT_BIP32_PATH = "m/84'/1'/0'/0/0";
-const hardcodedScriptType = BitcoinScriptType.P2WPKH;
+const getDefaultBip32Path = (scriptType: BitcoinScriptType, network: Network): string => {
+  switch (scriptType) {
+    case BitcoinScriptType.P2WPKH:
+      return `m/84'/${network === 'main' ? '0' : '1'}'/0'/0/0`;
+  }
+};
+
+const DEFAULT_SCRIPT_TYPE = BitcoinScriptType.P2WPKH;
 
 interface ExtendedPublicKey {
   xpub: string;
@@ -70,17 +87,13 @@ const { ethereum } = window;
 
 const snapId = 'npm:@gobob/bob-snap';
 
+// TODO: distinguish between payment and oridnals address
 class MMSnapConnector extends SatsConnector {
-  id = 'metamask_snap';
-  name = 'MetaMask';
-  // TODO: add when snap is published
-  homepage = 'https://metamask.io/snaps/';
-
   extendedPublicKey: ExtendedPublicKey | undefined;
   snapNetwork: 'main' | 'test' = 'main';
 
   constructor(network: WalletNetwork) {
-    super(network);
+    super(network, 'metamask_snap', 'MetaMask', 'https://snaps.metamask.io/snap/npm/gobob/bob-snap/');
   }
 
   async connect(): Promise<void> {
@@ -90,24 +103,28 @@ class MMSnapConnector extends SatsConnector {
       const result: any = await ethereum.request({
         method: 'wallet_requestSnaps',
         params: {
-          [snapId]: {}
+          [snapId]: {
+            version: '2.2.1'
+          }
         }
       });
 
-      const hasError = !!result?.snaps?.[snapId]?.error;
-
-      if (hasError) {
-        throw new Error('Failed Connect');
-      }
+      // eslint-disable-next-line no-console
+      console.log('Using snap version:', result?.[snapId]?.version);
     } finally {
-      // Switch in case current network is testnet
-      if (this.snapNetwork === 'test') {
-        await this.updateNetworkInSnap();
+      const mappedNetwork = getLibNetwork(this.snapNetwork);
+
+      if (mappedNetwork !== this.network) {
+        const expectedNetwork = getSnapNetwork(this.network);
+
+        // Switch in case current network is wrong
+        await this.updateNetworkInSnap(expectedNetwork);
       }
 
       this.extendedPublicKey = await this.getExtendedPublicKey();
       this.publicKey = await this.getPublicKey();
-      this.address = addressFromExtPubKey(this.extendedPublicKey.xpub, await this.getNetwork());
+      // Set the address to P2WPKH
+      this.paymentAddress = addressFromExtPubKey(this.extendedPublicKey.xpub, await this.network);
     }
   }
 
@@ -118,6 +135,10 @@ class MMSnapConnector extends SatsConnector {
 
     return Object.keys(snaps || {}).includes(snapId);
   }
+
+  on(): void {}
+
+  removeListener(): void {}
 
   async getExtendedPublicKey() {
     if (this.extendedPublicKey) {
@@ -133,7 +154,7 @@ class MMSnapConnector extends SatsConnector {
             method: 'btc_getPublicExtendedKey',
             params: {
               network: this.snapNetwork,
-              scriptType: BitcoinScriptType.P2WPKH
+              scriptType: DEFAULT_SCRIPT_TYPE
             }
           }
         }
@@ -156,155 +177,19 @@ class MMSnapConnector extends SatsConnector {
     // convert to xpub/tpub before getting pubkey
     const forcedXpub = anyPubToXpub(this.extendedPublicKey.xpub, await this.getNetwork());
 
-    // child is m/84'/1'/0'/0/0 (same as DEFAULT_BIP32_PATH)
+    // child is m/84'/0'/0'/0/0
     const pubkey = bip32.fromBase58(forcedXpub, network).derive(0).derive(0).publicKey;
 
     return pubkey.toString('hex');
   }
 
-  async sendToAddress(toAddress: string, amount: number): Promise<string> {
-    if (!this.publicKey) {
-      throw new Error('Public key missing');
-    }
-
-    const electrsClient = new DefaultElectrsClient(this.network as string);
-
-    const libNetwork = await this.getNetwork();
-    const senderPubKey = Buffer.from(this.publicKey, 'hex');
-    const senderAddress = bitcoin.payments.p2wpkh({
-      pubkey: senderPubKey,
-      network: libNetwork
-    }).address!;
-
-    const txOutputs = [
-      {
-        address: toAddress,
-        value: amount
-      }
-    ];
-
-    const allConfirmedUtxos = await electrsClient.getAddressUtxos(senderAddress);
-    const utxos = await findUtxosWithoutInscriptions(electrsClient, allConfirmedUtxos);
-
-    const { inputs, outputs } = coinSelect(
-      utxos.map((utxo) => {
-        return {
-          txId: utxo.txid,
-          vout: utxo.vout,
-          value: utxo.value
-        };
-      }),
-      txOutputs,
-      1 // fee rate
-    );
-
-    if (!inputs || !outputs) {
-      throw Error('Please make sure you gave enough funds');
-    }
-
-    const psbt = new bitcoin.Psbt({ network: libNetwork });
-
-    for (const input of inputs) {
-      const txHex = await electrsClient.getTransactionHex(input.txId);
-      const utx = bitcoin.Transaction.fromHex(txHex);
-
-      const witnessUtxo = {
-        script: utx.outs[input.vout].script,
-        value: input.value
-      };
-      const nonWitnessUtxo = utx.toBuffer();
-
-      psbt.addInput({
-        hash: input.txId,
-        index: input.vout,
-        nonWitnessUtxo,
-        witnessUtxo,
-        bip32Derivation: [
-          {
-            masterFingerprint: Buffer.from((await this.getMasterFingerprint()) as any, 'hex'),
-            path: DEFAULT_BIP32_PATH,
-            pubkey: senderPubKey
-          }
-        ]
-      });
-    }
-
-    const changeAddress = senderAddress;
-
-    outputs.forEach((output: any) => {
-      // output may have been added for change
-      if (!output.address) {
-        output.address = changeAddress;
-      }
-
-      psbt.addOutput({
-        address: output.address,
-        value: output.value
-      });
-    });
-
-    const txResult = await this.signPsbt(psbt.toBase64(), hardcodedScriptType);
-
-    return electrsClient.broadcastTx(txResult.txHex);
+  signMessage(): Promise<string> {
+    throw new Error('Not implemented');
   }
 
-  async sendInscription(address: string, inscriptionId: string, feeRate = 1): Promise<string> {
-    if (!this.publicKey) {
-      throw new Error('Connect failed');
-    }
-    const pubkey = Buffer.from(await this.publicKey, 'hex');
-
-    const libNetwork = await this.getNetwork();
-    const senderAddress = bitcoin.payments.p2wpkh({ pubkey, network: libNetwork }).address!;
-
-    const electrsClient = new DefaultElectrsClient(this.network as string);
-
-    const utxos = await electrsClient.getAddressUtxos(senderAddress);
-    const inscriptionUtxo = await findUtxoForInscriptionId(electrsClient, utxos, inscriptionId);
-
-    if (inscriptionUtxo === undefined) {
-      throw Error(
-        `Unable to find utxo owned by address [${senderAddress}] containing inscription id [${inscriptionId}]`
-      );
-    }
-
-    const psbt = new bitcoin.Psbt({ network: libNetwork });
-    const txHex = await electrsClient.getTransactionHex(inscriptionUtxo.txid);
-    const utx = bitcoin.Transaction.fromHex(txHex);
-
-    const witnessUtxo = {
-      script: utx.outs[inscriptionUtxo.vout].script,
-      value: inscriptionUtxo.value
-    };
-    const nonWitnessUtxo = utx.toBuffer();
-    const masterFingerprint = Buffer.from((await this.getMasterFingerprint()) as any, 'hex');
-
-    // prepare single input
-    psbt.addInput({
-      hash: inscriptionUtxo.txid,
-      index: inscriptionUtxo.vout,
-      nonWitnessUtxo,
-      witnessUtxo,
-      bip32Derivation: [
-        {
-          masterFingerprint,
-          path: DEFAULT_BIP32_PATH,
-          pubkey: pubkey
-        }
-      ]
-    });
-
-    const txSize = estimateTxSize(libNetwork, address);
-    const fee = txSize * feeRate;
-
-    psbt.addOutput({
-      address: address,
-      value: inscriptionUtxo.value - fee
-    });
-
-    const txResult = await this.signPsbt(psbt.toBase64(), hardcodedScriptType);
-
-    return electrsClient.broadcastTx(txResult.txHex);
+  // FIXME: Refactor using btc-signer
+  sendToAddress(): Promise<string> {
+    throw new Error('Method not implemented.');
   }
 
   async signInput(inputIndex: number, psbt: Psbt) {
@@ -318,9 +203,9 @@ class MMSnapConnector extends SatsConnector {
             params: {
               psbt: psbt.toBase64(),
               network: this.snapNetwork,
-              scriptType: BitcoinScriptType.P2WPKH,
+              scriptType: DEFAULT_SCRIPT_TYPE,
               inputIndex,
-              path: DEFAULT_BIP32_PATH
+              path: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork)
             }
           }
         }
@@ -356,30 +241,64 @@ class MMSnapConnector extends SatsConnector {
     }
   }
 
-  async signPsbt(base64Psbt: string, scriptType: BitcoinScriptType) {
+  async signPsbt(psbtHex: string, _psbtInputAccounts: PsbtInputAccounts[]): Promise<string> {
+    const psbt = bitcoin.Psbt.fromHex(psbtHex);
+    const masterFingerprint = Buffer.from((await this.getMasterFingerprint()) as any, 'hex');
+    const publicKey = Buffer.from(this.publicKey!, 'hex');
+    const bip32Path = getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork);
+
+    psbt.data.inputs.forEach(
+      (psbtInput) =>
+        (psbtInput.bip32Derivation = [
+          {
+            masterFingerprint: masterFingerprint,
+            path: bip32Path,
+            pubkey: publicKey
+          }
+        ])
+    );
+
+    // add this so the current validation works, in a future version of the snap
+    // we will change it to accept op_return without specifying bip32Derivation
+    psbt.data.outputs.forEach(
+      (psbtOutput) =>
+        (psbtOutput.bip32Derivation = [
+          {
+            masterFingerprint: masterFingerprint,
+            path: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork),
+            pubkey: publicKey
+          }
+        ])
+    );
+
     try {
-      return (await ethereum.request({
+      const psbtBase64 = (await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
           snapId,
           request: {
             method: 'btc_signPsbt',
             params: {
-              psbt: base64Psbt,
+              psbt: psbt.toBase64(),
               network: this.snapNetwork,
-              scriptType
+              scriptType: DEFAULT_SCRIPT_TYPE,
+              opts: {
+                autoFinalize: false
+              }
             }
           }
         }
-      })) as Promise<{ txId: string; txHex: string }>;
+      })) as string;
+
+      return hex.encode(base64.decode(psbtBase64));
     } catch (err: any) {
-      const error = new SnapError(err?.message || 'Sign PSBT failed');
+      const error = new SnapError(err?.message || 'Could not sign psbt');
 
       throw error;
     }
   }
 
-  async updateNetworkInSnap() {
+  async updateNetworkInSnap(expectedNetwork: Network) {
     try {
       return await ethereum.request({
         method: 'wallet_invokeSnap',
@@ -389,7 +308,7 @@ class MMSnapConnector extends SatsConnector {
             method: 'btc_network',
             params: {
               action: 'set',
-              network: this.snapNetwork
+              network: expectedNetwork
             }
           }
         }

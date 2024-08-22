@@ -1,4 +1,4 @@
-export const PsbtValidateErrors = [
+const PsbtValidateErrors = [
   {
     code: 10001,
     name: 'InputsDataInsufficient',
@@ -36,7 +36,7 @@ export const PsbtValidateErrors = [
   }
 ];
 
-export const SnapRequestErrors = [
+const SnapRequestErrors = [
   {
     code: 20000,
     name: 'NoPermission',
@@ -89,7 +89,7 @@ export const SnapRequestErrors = [
   }
 ];
 
-export class BaseError extends Error {
+class BaseError extends Error {
   code: number;
   constructor(code: number) {
     super();
@@ -110,7 +110,7 @@ export class SnapError extends BaseError {
   }
 }
 
-export const mapErrorToUserFriendlyError = (message: string) => {
+const mapErrorToUserFriendlyError = (message: string) => {
   const psbtValidateError = PsbtValidateErrors.find((item) => message.startsWith(item.message));
   const snapRequestError = SnapRequestErrors.find((item) => message.startsWith(item.message));
 

@@ -6,7 +6,7 @@ const useDisconnect = () => {
   const { setConnector } = useSatsWagmi();
 
   const { mutate, mutateAsync, ...mutation } = useMutation({
-    mutationKey: ['disconnect'],
+    mutationKey: ['sats-disconnect'],
     mutationFn: async () => {
       setConnector(undefined);
     }

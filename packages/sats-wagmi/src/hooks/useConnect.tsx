@@ -7,7 +7,7 @@ const useConnect = () => {
   const { connectors, setConnector } = useSatsWagmi();
 
   const { mutate, mutateAsync, ...query } = useMutation({
-    mutationKey: ['connect'],
+    mutationKey: ['sats-connect'],
     mutationFn: async ({ connector }: { connector?: SatsConnector }) => {
       if (!connector) {
         throw new Error('invalid connector id');
@@ -19,7 +19,9 @@ const useConnect = () => {
         throw new Error('Wallet is not installed');
       }
 
-      return connector.connect();
+      await connector.connect();
+
+      return { address: connector.paymentAddress };
     },
     onSuccess: (_, { connector }) => {
       setConnector(connector);

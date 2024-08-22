@@ -1,8 +1,8 @@
 {
   "name": "@gobob/react-query",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "description": "Bob UI React Query",
-  "homepage": "https://github.com/bob-collective/sats-wagmi#readme",
+  "homepage": "https://github.com/bob-collective/bob-ui#readme",
   "license": "MIT",
   "keywords": [
     "bob",
@@ -20,32 +20,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bob-collective/sats-wagmi.git",
-    "directory": "packages/react-query"
+    "url": "git+https://github.com/bob-collective/bob-ui.git",
+    "directory": "packages/components"
   },
   "bugs": {
-    "url": "https://github.com/bob-collective/sats-wagmi/issues"
+    "url": "https://github.com/bob-collective/bob-ui/issues"
   },
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "clean": "rimraf dist .turbo",
-    "typecheck": "tsc --noEmit",
-    "build": "tsup src/index.ts --dts",
-    "prepack": "clean-package",
-    "postpack": "clean-package restore"
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=18"
   },
   "devDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "clean-package": "^2.2.0"
+    "react": "^18.2.0"
   },
   "dependencies": {
-    "@tanstack/react-query": "^4.36.1"
-  },
-  "clean-package": "../../clean-package.config.json"
+    "@tanstack/react-query": "^5.35.1",
+    "@tanstack/react-query-devtools": "^5.35.1"
+  }
 }
