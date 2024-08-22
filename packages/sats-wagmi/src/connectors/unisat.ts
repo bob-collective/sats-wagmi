@@ -1,6 +1,6 @@
 import { Network } from 'bitcoin-address-validation';
 
-import { bitkeepLogo } from '../assets/bitget';
+import { bitgetLogo } from '../assets/bitget';
 
 import { PsbtInputAccounts, SatsConnector } from './base';
 
@@ -80,23 +80,23 @@ type Unisat = {
   signMessage: (msg: string, type?: 'ecdsa' | 'bip322-simple') => Promise<string>;
 };
 
-type WalletSource = 'bitkeep' | 'unisat';
+type WalletSource = 'bitget' | 'unisat';
 
 declare global {
   interface Window {
     unisat: Unisat;
-    bitkeep: {
+    bitget: {
       unisat: Unisat;
     };
   }
 }
 
 const metadata: Record<WalletSource, { id: string; name: string; homepage: string; icon?: string }> = {
-  bitkeep: {
+  bitget: {
     id: 'com.bitget.web3',
     name: 'Bitget Wallet',
     homepage: 'https://web3.bitget.com',
-    icon: bitkeepLogo
+    icon: bitgetLogo
   },
   unisat: {
     id: 'unisat',
@@ -117,7 +117,7 @@ class UnisatConnector extends SatsConnector {
   }
 
   private getSource() {
-    return this.source === 'bitkeep' ? window?.bitkeep?.unisat : window?.unisat;
+    return this.source === 'bitget' ? window?.bitget?.unisat : window?.unisat;
   }
 
   async connect(): Promise<void> {
