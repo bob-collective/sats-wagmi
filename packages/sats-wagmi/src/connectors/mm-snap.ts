@@ -87,7 +87,7 @@ const { ethereum } = window;
 
 const snapId = 'npm:@gobob/bob-snap';
 
-// TODO: distinguish between payment and oridnals address
+// TODO: distinguish between payment and ordinals address
 class MMSnapConnector extends SatsConnector {
   extendedPublicKey: ExtendedPublicKey | undefined;
   snapNetwork: 'main' | 'test' = 'main';
