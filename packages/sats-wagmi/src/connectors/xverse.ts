@@ -1,19 +1,17 @@
-import { Psbt } from 'bitcoinjs-lib';
 import {
   AddressPurpose,
   BitcoinNetworkType,
-  createInscription,
   getAddress,
   sendBtcTransaction,
-  signTransaction
+  signTransaction,
+  signMessage
 } from 'sats-connect';
-import { isValidBTCAddress } from '@gobob/utils';
+import { base64, hex } from '@scure/base';
+import validate, { Network } from 'bitcoin-address-validation';
 
-import { WalletNetwork } from '../types';
+import { PsbtInputAccounts, SatsConnector } from './base';
 
-import { SatsConnector } from './base';
-
-const getWalletNetwork = (network: WalletNetwork) => ({
+const getWalletNetwork = (network: Network) => ({
   type: network === 'mainnet' ? BitcoinNetworkType.Mainnet : BitcoinNetworkType.Testnet
 });
 
@@ -25,15 +23,8 @@ declare global {
 }
 
 class XverseConnector extends SatsConnector {
-  id = 'xverse';
-  name = 'Xverse';
-  homepage = 'https://www.xverse.app/';
-
-  // Needed for sendBtcTransaction function
-  paymentAddress: string | undefined;
-
-  constructor(network: WalletNetwork) {
-    super(network);
+  constructor(network: Network) {
+    super(network, 'xverse', 'Xverse', 'https://www.xverse.app/');
   }
 
   async connect(): Promise<void> {
@@ -45,7 +36,7 @@ class XverseConnector extends SatsConnector {
           network: getWalletNetwork(this.network)
         },
         onFinish: (res) => {
-          const { address, publicKey } = res.addresses.find(
+          const { address: ordinalsAddress } = res.addresses.find(
             (address) => address.purpose === AddressPurpose.Ordinals
           ) as {
             address: string;
@@ -53,7 +44,7 @@ class XverseConnector extends SatsConnector {
             purpose: string;
           };
 
-          const { address: paymentAddress } = res.addresses.find(
+          const { address: paymentAddress, publicKey } = res.addresses.find(
             (address) => address.purpose === AddressPurpose.Payment
           ) as {
             address: string;
@@ -61,12 +52,14 @@ class XverseConnector extends SatsConnector {
             purpose: string;
           };
 
-          if (!isValidBTCAddress(this.network as any, address)) {
-            throw new Error(`Invalid Network. Please switch to bitcoin ${this.network}.`);
+          if (!validate(paymentAddress, this.network)) {
+            throw new Error(`Invalid Network. Please switch to Bitcoin ${this.network}.`);
           }
 
-          this.address = address;
+          // P2SH
           this.paymentAddress = paymentAddress;
+          // P2TR
+          this.ordinalsAddress = ordinalsAddress;
           this.publicKey = publicKey;
           resolve();
         },
@@ -77,18 +70,41 @@ class XverseConnector extends SatsConnector {
     });
   }
 
+  on(): void {}
+
+  removeListener(): void {}
+
   async isReady() {
     this.ready = !!window.XverseProviders;
 
     return this.ready;
   }
 
-  async sendToAddress(toAddress: string, amount: number): Promise<string> {
+  async signMessage(message: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      if (!this.address || !this.paymentAddress) {
+      if (!this.paymentAddress) {
         return reject(new Error('Something went wrong while connecting'));
       }
 
+      await signMessage({
+        payload: {
+          address: this.paymentAddress,
+          message,
+          network: getWalletNetwork(this.network)
+        },
+        onFinish: (response) => {
+          resolve(response);
+        },
+        onCancel: () => reject(new Error('Canceled'))
+      });
+    });
+  }
+
+  async sendToAddress(toAddress: string, amount: number): Promise<string> {
+    return new Promise(async (resolve, reject) => {
+      if (!this.paymentAddress) {
+        return reject(new Error('Something went wrong while connecting'));
+      }
       await sendBtcTransaction({
         payload: {
           network: getWalletNetwork(this.network),
@@ -105,44 +121,25 @@ class XverseConnector extends SatsConnector {
     });
   }
 
-  async inscribe(contentType: 'text' | 'image', content: string): Promise<string> {
+  async signPsbt(psbtHex: string, psbtInputAccounts: PsbtInputAccounts[]): Promise<string> {
+    // https://docs.xverse.app/sats-connect/bitcoin-methods/signpsbt
     return new Promise(async (resolve, reject) => {
-      await createInscription({
-        payload: {
-          network: getWalletNetwork(this.network),
-          content,
-          contentType: contentType === 'text' ? 'text/plain;charset=utf-8' : 'image/jpeg',
-          payloadType: contentType === 'text' ? 'PLAIN_TEXT' : 'BASE_64'
-        },
-        onFinish: (response) => {
-          resolve(response.txId);
-        },
-        onCancel: () => reject(new Error('Canceled'))
-      });
-    });
-  }
-
-  async signInput(inputIndex: number, psbt: Psbt): Promise<Psbt> {
-    return new Promise(async (resolve, reject) => {
-      if (!this.address) {
+      if (!this.ordinalsAddress) {
         return reject(new Error('Something went wrong while connecting'));
       }
+
+      const psbtBase64 = base64.encode(hex.decode(psbtHex));
 
       await signTransaction({
         payload: {
           network: getWalletNetwork(this.network),
           message: 'Sign Transaction',
-          psbtBase64: psbt.toBase64(),
+          psbtBase64: psbtBase64,
           broadcast: false,
-          inputsToSign: [
-            {
-              address: this.address,
-              signingIndexes: [inputIndex]
-            }
-          ]
+          inputsToSign: psbtInputAccounts
         },
         onFinish: (response) => {
-          resolve(Psbt.fromBase64(response.psbtBase64));
+          resolve(hex.encode(base64.decode(response.psbtBase64)));
         },
         onCancel: () => reject(new Error('Canceled'))
       });

@@ -1,6 +1,6 @@
 # Sats-Wagmi Contributing Guide
 
-Hello!, I am very excited that you are interested in contributing to sats-wagmi. However, before submitting your contribution, be sure to take a moment and read the following guidelines.
+Hi, we are very excited that you are interested in contributing to sats-wagmi. However, before submitting your contribution, be sure to take a moment and read the following guidelines.
 
 - [Extraction request guidelines](#pull-request-guidelines)
 - [Development Setup](#development-setup)
@@ -27,7 +27,7 @@ When you create a commit we kindly ask you to follow the convention
 `category(scope or module): message` in your commit message while using one of
 the following categories:
 
-- `feat / feature`: all changes that introduce completely new code or new
+- `feat`: all changes that introduce completely new code or new
   features
 - `fix`: changes that fix a bug (ideally you will additionally reference an
   issue if present)
@@ -108,15 +108,7 @@ pnpm install
 
 We use [Turbo Repo](https://turborepo.org/) for the project management.
 
-2. If you will be working on the components source code, you can use the following command to start the storybook dev server:
-
-```bash
-## Start the storybook of core components
-pnpm dev
-
-```
-
-3. Create a branch for your feature or fix:
+2. Create a branch for your feature or fix:
 
 ```bash
 # Move into a new branch for your feature
@@ -128,21 +120,25 @@ git checkout -b feat/thing
 git checkout -b fix/something
 ```
 
-4. If your code passes all the tests, then push your feature/fix branch:
+3. If your code passes all the tests, then push your feature/fix branch:
+
+```bash
+pnpm test
+```
 
 All commits that fix bugs or add features need a test.
 You can run the nest command for component specific tests.
 
-5. Be sure the package builds.
+4. Be sure the package builds.
 
-```
+```bash
 # Build current code
 pnpm build # or npm run build
 ```
 
 > Note: ensure your version of Node is 18 or higher to run scripts
 
-6. Send your pull request:
+5. Send your pull request:
 
 - Send your pull request to the `main` branch
 - Your pull request will be reviewed by the maintainers and the maintainers will decide if it is accepted or not

@@ -7,7 +7,6 @@
     "url": "https://github.com/bob-collective/sats-wagmi"
   },
   "scripts": {
-    "dev": "storybook dev -p 6006",
     "lint": "eslint packages/**/src --ext .ts,.tsx --config .eslintrc.json --cache",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "turbo typecheck",
