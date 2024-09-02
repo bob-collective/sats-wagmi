@@ -1,7 +1,7 @@
-import { DefaultEsploraClient, createTransfer } from '@gobob/bob-sdk';
+import { EsploraClient, createBitcoinPsbt } from '@gobob/bob-sdk';
 import retry from 'async-retry';
 import { Transaction } from '@scure/btc-signer';
-import { hex } from '@scure/base';
+import { hex, base64 } from '@scure/base';
 import { AddressType, getAddressInfo, Network } from 'bitcoin-address-validation';
 
 type Address = string;
@@ -43,13 +43,16 @@ abstract class SatsConnector {
   // NOTE: signet is currently not supported
   network: Network;
 
-  // TODO: add an optional electrs URL argument to the constructor
-  constructor(network: Network, id: string, name: string, homepage: string, icon?: string) {
+  /** Override for the Esplora API */
+  esploraBaseUrl?: string;
+
+  constructor(network: Network, id: string, name: string, homepage: string, icon?: string, esploraBaseUrl?: string) {
     this.network = network;
     this.id = id;
     this.name = name;
     this.homepage = homepage;
     this.icon = icon;
+    this.esploraBaseUrl = esploraBaseUrl;
   }
 
   /** Connect to the wallet */
@@ -120,7 +123,7 @@ abstract class SatsConnector {
    * @param address - The address to get the type of.
    * @returns The address type of the address.
    */
-  getAddressType(address: string): AddressType | undefined {
+  getAddressType(address: string): AddressType {
     return getAddressInfo(address).type;
   }
 
@@ -130,6 +133,7 @@ abstract class SatsConnector {
 
     return !!address;
   }
+
   /** Return the public key of the connected address.
    * @returns The public key of the connected address.
    */
@@ -144,6 +148,18 @@ abstract class SatsConnector {
   abstract on(callback: (account: string) => void): void;
 
   abstract removeListener(callback: (account: string) => void): void;
+
+  private get esploraClient() {
+    let esploraClient: EsploraClient;
+
+    if (this.esploraBaseUrl) {
+      esploraClient = new EsploraClient(this.esploraBaseUrl);
+    } else {
+      esploraClient = new EsploraClient(this.network as string);
+    }
+
+    return esploraClient;
+  }
 
   /** Get the transaction from the transaction ID
    * @param txId - The transaction ID to get the transaction from.
@@ -161,13 +177,12 @@ abstract class SatsConnector {
    * ```
    */
   async getTransaction(txId: string): Promise<string> {
-    // TODO: allow setting different electrs URLs
-    const electrsClient = new DefaultEsploraClient(this.network as string);
+    const esploraClient = this.esploraClient;
 
     return retry(
       async (bail) => {
         // if anything throws, we retry
-        const txHex = await electrsClient.getTransactionHex(txId);
+        const txHex = await esploraClient.getTransactionHex(txId);
 
         if (!txHex) {
           bail(new Error('Failed'));
@@ -215,12 +230,12 @@ abstract class SatsConnector {
    * @note Most Bitcoin nodes accept 80 bytes maximum for OP_RETURN data. If you want to include more data,
    * consider using a dedicated service that can include such transactions in a block.
    */
-  async sendToAddressWithData(toAddress: string, amount: number, data: string): Promise<string> {
-    const electrsClient = new DefaultEsploraClient(this.network as string);
+  async sendToAddressWithOpReturn(toAddress: string, amount: number, data: string): Promise<string> {
+    const esploraClient = this.esploraClient;
 
     const signedTx = await this.createTxWithOpReturn(toAddress, amount, data);
 
-    const txId = await electrsClient.broadcastTx(signedTx);
+    const txId = await esploraClient.broadcastTx(signedTx);
 
     return txId;
   }
@@ -240,32 +255,24 @@ abstract class SatsConnector {
    * ```
    */
   async createTxWithOpReturn(toAddress: string, amount: number, data: string): Promise<string> {
-    if (!this.paymentAddress) {
-      throw new Error('No payment address specified');
-    }
+    this.validatePaymentAddress();
 
-    const addressType = this.getAddressType(this.paymentAddress);
+    const psbtBase64 = await createBitcoinPsbt(this.paymentAddress, toAddress, amount, this.publicKey, data);
 
-    if (!addressType) {
-      throw new Error('Invalid address type');
-    }
+    return this.signAllInputs(psbtBase64);
+  }
 
-    const unsignedTransaction = await createTransfer(
-      this.network as any,
-      addressType,
-      this.paymentAddress,
-      toAddress,
-      amount,
-      this.publicKey,
-      data
-    );
+  async signAllInputs(psbtBase64: string) {
+    this.validatePaymentAddress();
+
+    const unsignedTx = Transaction.fromPSBT(base64.decode(psbtBase64));
 
     // Determine how many inputs to sign
-    const inputLength = unsignedTransaction.inputsLength;
+    const inputLength = unsignedTx.inputsLength;
     const inputsToSign = Array.from({ length: inputLength }, (_, i) => i);
 
     // Sign all inputs
-    const psbt = unsignedTransaction.toPSBT(0);
+    const psbt = unsignedTx.toPSBT(0);
     const psbtHex = hex.encode(psbt);
 
     // Sign all inputs with the payment address
@@ -280,8 +287,19 @@ abstract class SatsConnector {
 
     signedTx.finalize();
 
-    // TODO: verify this is correct.
-    return signedTx.toBytes().toString();
+    return signedTx.hex;
+  }
+
+  private validatePaymentAddress(): asserts this is { paymentAddress: Address } {
+    if (!this.paymentAddress) {
+      throw new Error('No payment address specified');
+    }
+
+    const addressType = this.getAddressType(this.paymentAddress);
+
+    if (!addressType) {
+      throw new Error('Invalid address type');
+    }
   }
 }
 

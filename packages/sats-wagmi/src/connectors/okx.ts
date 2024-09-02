@@ -4,6 +4,8 @@ import { okxLogo } from '../assets/okx';
 
 import { PsbtInputAccounts, SatsConnector } from './base';
 
+type WalletNetwork = 'livenet' | 'testnet';
+
 const getLibNetwork = (network: WalletNetwork): Network => {
   switch (network) {
     case 'livenet':
@@ -38,8 +40,6 @@ type SendInscriptionsResult = { txid: string };
 
 type Balance = { confirmed: number; unconfirmed: number; total: number };
 
-type WalletNetwork = 'livenet' | 'testnet';
-
 type OKXWallet = {
   connect: () => Promise<{
     address: string;
@@ -47,7 +47,7 @@ type OKXWallet = {
   }>;
   requestAccounts: () => Promise<string[]>;
   getAccounts: () => Promise<string[]>;
-  getNetwork: () => Promise<OKXNetwork>;
+  getNetwork: () => Promise<WalletNetwork>;
   getPublicKey: () => Promise<string>;
   getBalance: () => Promise<Balance>;
   sendBitcoin: (address: string, atomicAmount: number, options?: { feeRate: number }) => Promise<string>;

@@ -1,4 +1,4 @@
-import { BitcoinNetwork } from '@gobob/types';
+import { Network as BitcoinNetwork } from 'bitcoin-address-validation';
 import { FC, ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
 
@@ -14,15 +14,15 @@ type SatsConfigData = {
   network: BitcoinNetwork;
 };
 
-const StatsWagmiContext = createContext<SatsConfigData>({
+const SatsWagmiContext = createContext<SatsConfigData>({
   connector: undefined,
   connectors: [],
   setConnector: () => {},
-  network: 'mainnet'
+  network: BitcoinNetwork.mainnet
 });
 
 const useSatsWagmi = (): SatsConfigData => {
-  const context = useContext(StatsWagmiContext);
+  const context = useContext(SatsWagmiContext);
 
   if (context === undefined) {
     throw new Error('useSatsWagmi must be used within a SatsWagmiConfig!');
@@ -36,7 +36,7 @@ type SatsWagmiConfigProps = {
   network?: BitcoinNetwork;
 };
 
-const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = 'mainnet' }) => {
+const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = BitcoinNetwork.mainnet }) => {
   const [connectors, setConnectors] = useState<SatsConnector[]>([]);
   const [connector, setCurrentConnector] = useState<SatsConnector>();
 
@@ -64,7 +64,7 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = 'mainne
 
       readyConnectors.push(mmSnap);
 
-      const bitkeep = new UnisatConnector(network, 'bitkeep');
+      const bitkeep = new UnisatConnector(network, 'bitget');
 
       readyConnectors.push(bitkeep);
 
@@ -107,9 +107,9 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = 'mainne
   }, [connectors]);
 
   return (
-    <StatsWagmiContext.Provider value={{ connectors, connector, setConnector, network }}>
+    <SatsWagmiContext.Provider value={{ connectors, connector, setConnector, network }}>
       {children}
-    </StatsWagmiContext.Provider>
+    </SatsWagmiContext.Provider>
   );
 };
 
