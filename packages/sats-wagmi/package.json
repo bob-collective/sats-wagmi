@@ -30,7 +30,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "clean": "rimraf dist .turbo",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build": "tsup src/index.ts --dts"
   },
   "peerDependencies": {
     "react": ">=18",
