@@ -1,4 +1,4 @@
-import { useMutation } from '@gobob/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { useSatsWagmi } from '../provider';
 

@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from '@gobob/react-query';
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import { useSatsWagmi } from '../provider';

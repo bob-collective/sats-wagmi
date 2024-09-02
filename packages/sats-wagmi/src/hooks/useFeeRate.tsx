@@ -1,8 +1,11 @@
-import { DefaultEsploraClient } from '@gobob/bob-sdk';
-import { CONFIRMATION_TARGET } from '@gobob/utils';
-import { INTERVAL, UndefinedInitialDataOptions, useQuery } from '@gobob/react-query';
+import { EsploraClient } from '@gobob/bob-sdk';
+import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
+import { INTERVAL } from 'src/utils';
 
 import { useSatsWagmi } from '../provider';
+
+// Confirmation target for fee estimation in Bitcoin blocks
+export const CONFIRMATION_TARGET = 3;
 
 type UseFeeRateProps = {
   confirmations?: number;
@@ -15,9 +18,9 @@ const useFeeRate = ({ query, confirmations = CONFIRMATION_TARGET }: UseFeeRatePr
   return useQuery({
     queryKey: ['sats-fee-rate', network],
     queryFn: async () => {
-      const electrsClient = new DefaultEsploraClient(network);
+      const esploraClient = new EsploraClient(network);
 
-      const feeRate = await electrsClient.getFeeEstimate(confirmations);
+      const feeRate = await esploraClient.getFeeEstimate(confirmations);
 
       return BigInt(Math.ceil(feeRate));
     },

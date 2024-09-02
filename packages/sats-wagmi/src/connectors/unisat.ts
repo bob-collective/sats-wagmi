@@ -4,6 +4,8 @@ import { bitgetLogo } from '../assets/bitget';
 
 import { PsbtInputAccounts, SatsConnector } from './base';
 
+type WalletNetwork = 'livenet' | 'testnet';
+
 const getLibNetwork = (network: WalletNetwork): Network => {
   switch (network) {
     case 'livenet':
@@ -45,8 +47,6 @@ type getInscriptionsResult = { total: number; list: Inscription[] };
 type SendInscriptionsResult = { txid: string };
 
 type Balance = { confirmed: number; unconfirmed: number; total: number };
-
-type WalletNetwork = 'livenet' | 'testnet';
 
 type Unisat = {
   requestAccounts: () => Promise<string[]>;
@@ -108,10 +108,10 @@ const metadata: Record<WalletSource, { id: string; name: string; homepage: strin
 class UnisatConnector extends SatsConnector {
   source: WalletSource;
 
-  constructor(network: WalletNetwork, source: WalletSource) {
+  constructor(network: Network, source: WalletSource) {
     const { homepage, id, name, icon } = metadata[source];
 
-    super(getLibNetwork(network), id, name, homepage, icon);
+    super(network, id, name, homepage, icon);
 
     this.source = source;
   }
@@ -138,7 +138,8 @@ class UnisatConnector extends SatsConnector {
     this.ordinalsAddress = accounts[0];
     this.publicKey = publicKey;
 
-    window.unisat.on('accountsChanged', this.changeAccount);
+    // https://github.com/unisat-wallet/extension/blob/04cbfd6e7f7953815d35d8f77df457388fea2707/src/background/controller/provider/controller.ts#L39
+    window.unisat.on('accountsChanged', ([account]) => this.changeAccount(account));
   }
 
   disconnect() {

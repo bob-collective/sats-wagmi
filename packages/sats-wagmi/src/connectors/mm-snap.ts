@@ -1,31 +1,30 @@
 import * as ecc from '@bitcoin-js/tiny-secp256k1-asmjs';
 import { MetaMaskInpageProvider } from '@metamask/providers';
-import { BIP32Factory } from 'bip32';
+import { BIP32API, BIP32Factory } from 'bip32';
 import * as bitcoin from 'bitcoinjs-lib';
 import { Psbt } from 'bitcoinjs-lib';
 import bs58check from 'bs58check';
 import { base64, hex } from '@scure/base';
+import { Network } from 'bitcoin-address-validation';
 /* @ts-ignore */
 
-import { WalletNetwork } from '../types';
 import { SnapError } from '../utils';
 
 import { PsbtInputAccounts, SatsConnector } from './base';
 
-const getLibNetwork = (network: Network): WalletNetwork => {
+// https://github.com/bob-collective/bob-snap/blob/e34ab61def4ad65792d6150cd46af8c733a73c0d/packages/snap/src/interface.ts#L122-L125
+type WalletNetwork = 'main' | 'test';
+
+const getLibNetwork = (network: WalletNetwork): Network => {
   switch (network) {
     case 'main':
-      return 'mainnet';
+      return Network.mainnet;
     case 'test':
-      return 'testnet';
+      return Network.testnet;
   }
 };
 
-export enum BitcoinScriptType {
-  P2WPKH = 'P2WPKH'
-}
-
-const getSnapNetwork = (network: WalletNetwork): Network => {
+const getSnapNetwork = (network: Network): WalletNetwork => {
   switch (network) {
     default:
     case 'mainnet':
@@ -35,8 +34,15 @@ const getSnapNetwork = (network: WalletNetwork): Network => {
   }
 };
 
-bitcoin.initEccLib(ecc);
-const bip32 = BIP32Factory(ecc);
+const getBitcoinJsNetwork = (network: Network): bitcoin.Network => {
+  switch (network) {
+    default:
+    case 'mainnet':
+      return bitcoin.networks.bitcoin;
+    case 'testnet':
+      return bitcoin.networks.testnet;
+  }
+};
 
 function anyPubToXpub(xyzpub: string, network: bitcoin.Network) {
   let data = bs58check.decode(xyzpub);
@@ -53,14 +59,18 @@ function anyPubToXpub(xyzpub: string, network: bitcoin.Network) {
   return bs58check.encode(data);
 }
 
-function addressFromExtPubKey(xyzpub: string, network: bitcoin.Network) {
+function addressFromExtPubKey(bip32: BIP32API, xyzpub: string, network: bitcoin.Network) {
   const forcedXpub = anyPubToXpub(xyzpub, network);
   const pubkey = bip32.fromBase58(forcedXpub, network).derive(0).derive(0).publicKey;
 
   return bitcoin.payments.p2wpkh({ pubkey, network }).address;
 }
 
-const getDefaultBip32Path = (scriptType: BitcoinScriptType, network: Network): string => {
+export enum BitcoinScriptType {
+  P2WPKH = 'P2WPKH'
+}
+
+const getDefaultBip32Path = (scriptType: BitcoinScriptType, network: WalletNetwork): string => {
   switch (scriptType) {
     case BitcoinScriptType.P2WPKH:
       return `m/84'/${network === 'main' ? '0' : '1'}'/0'/0/0`;
@@ -73,8 +83,6 @@ interface ExtendedPublicKey {
   xpub: string;
   mfp: string;
 }
-
-type Network = 'main' | 'test';
 
 declare global {
   interface Window {
@@ -90,10 +98,13 @@ const snapId = 'npm:@gobob/bob-snap';
 // TODO: distinguish between payment and ordinals address
 class MMSnapConnector extends SatsConnector {
   extendedPublicKey: ExtendedPublicKey | undefined;
-  snapNetwork: 'main' | 'test' = 'main';
+  snapNetwork: WalletNetwork = 'main';
+  bip32: BIP32API;
 
-  constructor(network: WalletNetwork) {
+  constructor(network: Network) {
     super(network, 'metamask_snap', 'MetaMask', 'https://snaps.metamask.io/snap/npm/gobob/bob-snap/');
+    bitcoin.initEccLib(ecc);
+    this.bip32 = BIP32Factory(ecc);
   }
 
   async connect(): Promise<void> {
@@ -124,7 +135,11 @@ class MMSnapConnector extends SatsConnector {
       this.extendedPublicKey = await this.getExtendedPublicKey();
       this.publicKey = await this.getPublicKey();
       // Set the address to P2WPKH
-      this.paymentAddress = addressFromExtPubKey(this.extendedPublicKey.xpub, await this.network);
+      this.paymentAddress = addressFromExtPubKey(
+        this.bip32,
+        this.extendedPublicKey.xpub,
+        getBitcoinJsNetwork(this.network)
+      );
     }
   }
 
@@ -171,14 +186,14 @@ class MMSnapConnector extends SatsConnector {
       throw new Error('Something wrong with connect');
     }
 
-    const network = await this.getNetwork();
+    const network = getBitcoinJsNetwork(this.network);
 
     // extKey.xpub is a vpub with purpose and cointype (mainnet vs testnet) path embedded
     // convert to xpub/tpub before getting pubkey
-    const forcedXpub = anyPubToXpub(this.extendedPublicKey.xpub, await this.getNetwork());
+    const forcedXpub = anyPubToXpub(this.extendedPublicKey.xpub, network);
 
     // child is m/84'/0'/0'/0/0
-    const pubkey = bip32.fromBase58(forcedXpub, network).derive(0).derive(0).publicKey;
+    const pubkey = this.bip32.fromBase58(forcedXpub, network).derive(0).derive(0).publicKey;
 
     return pubkey.toString('hex');
   }
@@ -298,7 +313,7 @@ class MMSnapConnector extends SatsConnector {
     }
   }
 
-  async updateNetworkInSnap(expectedNetwork: Network) {
+  async updateNetworkInSnap(expectedNetwork: WalletNetwork) {
     try {
       return await ethereum.request({
         method: 'wallet_invokeSnap',
@@ -314,7 +329,7 @@ class MMSnapConnector extends SatsConnector {
         }
       });
     } catch (err: any) {
-      const error = new SnapError(err?.message || 'Snap set Network failed');
+      const error = new SnapError(err?.message || 'Snap set network failed');
 
       throw error;
     }

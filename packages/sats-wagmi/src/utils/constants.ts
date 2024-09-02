@@ -1,9 +1,7 @@
-const INTERVAL = {
+export const INTERVAL = {
   HOUR: 3600000,
   MINUTE: 60000,
   SECONDS_30: 30000,
   SECONDS_15: 15000,
   SECONDS_10: 10000
 };
-
-export { INTERVAL };
