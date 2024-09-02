@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.2.2
+
+### Patch Changes
+
+- [#54](https://github.com/bob-collective/sats-wagmi/pull/54) [`f6b7d41540fc36d67d17e9d719ca29a5595f11bd`](https://github.com/bob-collective/sats-wagmi/commit/f6b7d41540fc36d67d17e9d719ca29a5595f11bd) Thanks [@gregdhill](https://github.com/gregdhill)! - Add missing tsup config
+
 ## 0.2.1
 
 ### Patch Changes
