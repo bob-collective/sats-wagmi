@@ -1,7 +1,7 @@
 import { EsploraClient } from '@gobob/bob-sdk';
 import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
-import { INTERVAL } from 'src/utils';
 
+import { INTERVAL } from '../utils';
 import { useSatsWagmi } from '../provider';
 
 // Confirmation target for fee estimation in Bitcoin blocks

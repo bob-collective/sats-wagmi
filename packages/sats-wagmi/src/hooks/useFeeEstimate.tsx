@@ -1,7 +1,7 @@
 import { estimateTxFee } from '@gobob/bob-sdk';
 import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
-import { INTERVAL } from 'src/utils';
 
+import { INTERVAL } from '../utils';
 import { useSatsWagmi } from '../provider';
 
 import { useFeeRate } from './useFeeRate';
