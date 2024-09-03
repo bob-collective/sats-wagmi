@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.2.5
+
+### Patch Changes
+
+- [#60](https://github.com/bob-collective/sats-wagmi/pull/60) [`d9da83b566cb5a23fc79f87ea567b949ca70fc03`](https://github.com/bob-collective/sats-wagmi/commit/d9da83b566cb5a23fc79f87ea567b949ca70fc03) Thanks [@gregdhill](https://github.com/gregdhill)! - fix: sig finalize, mm-snap
+
 ## 0.2.4
 
 ### Patch Changes
