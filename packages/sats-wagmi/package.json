@@ -10,7 +10,8 @@
     "btc wallet connector hooks",
     "btc wallet connector config"
   ],
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
