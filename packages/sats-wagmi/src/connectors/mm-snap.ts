@@ -115,7 +115,7 @@ class MMSnapConnector extends SatsConnector {
         method: 'wallet_requestSnaps',
         params: {
           [snapId]: {
-            version: '2.2.1'
+            version: '2.2.2'
           }
         }
       });
@@ -268,19 +268,6 @@ class MMSnapConnector extends SatsConnector {
           {
             masterFingerprint: masterFingerprint,
             path: bip32Path,
-            pubkey: publicKey
-          }
-        ])
-    );
-
-    // add this so the current validation works, in a future version of the snap
-    // we will change it to accept op_return without specifying bip32Derivation
-    psbt.data.outputs.forEach(
-      (psbtOutput) =>
-        (psbtOutput.bip32Derivation = [
-          {
-            masterFingerprint: masterFingerprint,
-            path: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork),
             pubkey: publicKey
           }
         ])

@@ -283,7 +283,7 @@ abstract class SatsConnector {
       }
     ]);
 
-    const signedTx = Transaction.fromRaw(Buffer.from(signedPsbtHex, 'hex'));
+    const signedTx = Transaction.fromPSBT(hex.decode(signedPsbtHex));
 
     signedTx.finalize();
 
