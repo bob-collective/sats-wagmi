@@ -1,6 +1,7 @@
 import { Network as BitcoinNetwork } from 'bitcoin-address-validation';
 import { FC, ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { LeatherConnector, MMSnapConnector, UnisatConnector, XverseConnector } from './connectors';
 import { SatsConnector } from './connectors/base';
@@ -34,9 +35,10 @@ const useSatsWagmi = (): SatsConfigData => {
 type SatsWagmiConfigProps = {
   children: ReactNode;
   network?: BitcoinNetwork;
+  queryClient: QueryClient;
 };
 
-const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = BitcoinNetwork.mainnet }) => {
+const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, queryClient, network = BitcoinNetwork.mainnet }) => {
   const [connectors, setConnectors] = useState<SatsConnector[]>([]);
   const [connector, setCurrentConnector] = useState<SatsConnector>();
 
@@ -107,9 +109,11 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, network = Bitcoin
   }, [connectors]);
 
   return (
-    <SatsWagmiContext.Provider value={{ connectors, connector, setConnector, network }}>
-      {children}
-    </SatsWagmiContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <SatsWagmiContext.Provider value={{ connectors, connector, setConnector, network }}>
+        {children}
+      </SatsWagmiContext.Provider>
+    </QueryClientProvider>
   );
 };
 
