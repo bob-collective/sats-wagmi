@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.2.4
+
+### Patch Changes
+
+- [#58](https://github.com/bob-collective/sats-wagmi/pull/58) [`5d41c87a85ce89cfd299edb4b8e057d077dba123`](https://github.com/bob-collective/sats-wagmi/commit/5d41c87a85ce89cfd299edb4b8e057d077dba123) Thanks [@danielsimao](https://github.com/danielsimao)! - fix: add missing react-query provider
+
 ## 0.2.3
 
 ### Patch Changes
