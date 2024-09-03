@@ -262,6 +262,10 @@ abstract class SatsConnector {
     return this.signAllInputs(psbtBase64);
   }
 
+  /** Sign all PSBT inputs
+   * @param psbtBase64 - The Base64 encoded PSBT.
+   * @returns The signed transaction hex.
+   */
   async signAllInputs(psbtBase64: string) {
     this.validatePaymentAddress();
 
