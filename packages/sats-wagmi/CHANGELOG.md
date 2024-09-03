@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.2.3
+
+### Patch Changes
+
+- [#56](https://github.com/bob-collective/sats-wagmi/pull/56) [`720d5e8f50a3d6fcfc507c4a2daf327cee1312eb`](https://github.com/bob-collective/sats-wagmi/commit/720d5e8f50a3d6fcfc507c4a2daf327cee1312eb) Thanks [@gregdhill](https://github.com/gregdhill)! - chore: package main
+
 ## 0.2.2
 
 ### Patch Changes
