@@ -2,6 +2,7 @@ import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { EsploraClient } from '@gobob/bob-sdk';
 
 import { useSatsWagmi } from '../provider';
+import { INTERVAL } from '../utils';
 
 import { useAccount } from './useAccount';
 
@@ -30,6 +31,7 @@ const useBalance = (props: UseBalanceProps = {}) => {
 
       return { value: BigInt(balance) };
     },
+    refetchInterval: INTERVAL.SECONDS_10,
     ...props
   });
 };

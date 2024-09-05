@@ -1,4 +1,6 @@
-import { formatEther } from 'viem';
+import type { FormEvent } from 'react';
+
+import { type Hex, formatUnits, parseUnits } from 'viem';
 import {
   // type BaseError,
   useAccount,
@@ -9,13 +11,21 @@ import {
   useConnect,
   // useConnections,
   // useConnectorClient,
-  useDisconnect
-  // useSendTransaction,
+  useDisconnect,
+  useSendTransaction
   // useSignMessage,
   // useSwitchAccount,
   // useSwitchChain,
   // useWaitForTransactionReceipt,
 } from '@gobob/sats-wagmi';
+
+function formatBtc(sats: bigint) {
+  return formatUnits(sats, 8);
+}
+
+function parseBtc(ether: string) {
+  return parseUnits(ether, 8);
+}
 
 function App() {
   // useAccountEffect({
@@ -37,8 +47,8 @@ function App() {
       <Connections />
       <BlockNumber /> */}
       <Balance />
-      {/* <ConnectorClient />
-      <SendTransaction /> */}
+      {/* <ConnectorClient /> */}
+      <SendTransaction />
     </>
   );
 }
@@ -173,15 +183,13 @@ function Connect() {
 // }
 
 function Balance() {
-  const { data: default_ } = useBalance();
   const { data: account_ } = useBalance();
 
   return (
     <div>
       <h2>Balance</h2>
 
-      <div>Balance (Default Chain): {!!default_?.value && formatEther(default_.value)}</div>
-      <div>Balance (Account Chain): {!!account_?.value && formatEther(account_.value)}</div>
+      <div>Balance: {!!account_?.value && formatBtc(account_.value)}</div>
     </div>
   );
 }
@@ -218,46 +226,41 @@ function Balance() {
 //   )
 // }
 
-// function SendTransaction() {
-//   const { data: hash, error, isPending, sendTransaction } = useSendTransaction()
+function SendTransaction() {
+  const { data: hash, isPending, sendTransaction } = useSendTransaction();
 
-//   async function submit(e: FormEvent<HTMLFormElement>) {
-//     e.preventDefault()
-//     const formData = new FormData(e.target as HTMLFormElement)
-//     const to = formData.get('address') as Hex
-//     const value = formData.get('value') as string
-//     sendTransaction({ to, value: parseEther(value) })
-//   }
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const to = formData.get('address') as Hex;
+    const value = formData.get('value') as string;
 
-//   const { isLoading: isConfirming, isSuccess: isConfirmed } =
-//     useWaitForTransactionReceipt({
-//       hash,
-//     })
+    sendTransaction({ to, value: parseBtc(value) });
+  }
 
-//   return (
-//     <div>
-//       <h2>Send Transaction</h2>
-//       <form onSubmit={submit}>
-//         <input name="address" placeholder="Address" required />
-//         <input
-//           name="value"
-//           placeholder="Amount (ETH)"
-//           type="number"
-//           step="0.000000001"
-//           required
-//         />
-//         <button disabled={isPending} type="submit">
-//           {isPending ? 'Confirming...' : 'Send'}
-//         </button>
-//       </form>
-//       {hash && <div>Transaction Hash: {hash}</div>}
-//       {isConfirming && 'Waiting for confirmation...'}
-//       {isConfirmed && 'Transaction confirmed.'}
-//       {error && (
-//         <div>Error: {(error as BaseError).shortMessage || error.message}</div>
-//       )}
-//     </div>
-//   )
-// }
+  // const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  //   useWaitForTransactionReceipt({
+  //     hash,
+  //   })
+
+  return (
+    <div>
+      <h2>Send Transaction</h2>
+      <form onSubmit={submit}>
+        <input required name='address' placeholder='Address' />
+        <input required name='value' placeholder='Amount (BTC)' step='0.00000001' type='number' />
+        <button disabled={isPending} type='submit'>
+          {isPending ? 'Confirming...' : 'Send'}
+        </button>
+      </form>
+      {hash && <div>Transaction Hash: {hash}</div>}
+      {/* {isConfirming && 'Waiting for confirmation...'}
+      {isConfirmed && 'Transaction confirmed.'} */}
+      {/* {error && (
+        <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+      )} */}
+    </div>
+  );
+}
 
 export default App;
