@@ -2,20 +2,11 @@ import type { FormEvent } from 'react';
 
 import { type Hex, formatUnits, parseUnits } from 'viem';
 import {
-  // type BaseError,
   useAccount,
-  // useAccountEffect,
   useBalance,
-  // useBlockNumber,
-  // useChainId,
   useConnect,
-  // useConnections,
-  // useConnectorClient,
   useDisconnect,
   useSendTransaction
-  // useSignMessage,
-  // useSwitchAccount,
-  // useSwitchChain,
   // useWaitForTransactionReceipt,
 } from '@gobob/sats-wagmi';
 
@@ -28,26 +19,11 @@ function parseBtc(ether: string) {
 }
 
 function App() {
-  // useAccountEffect({
-  //   onConnect(_data) {
-  //     // console.log('onConnect', data)
-  //   },
-  //   onDisconnect() {
-  //     // console.log('onDisconnect')
-  //   },
-  // })
-
   return (
     <>
       <Account />
       <Connect />
-      {/* <SwitchAccount />
-      <SwitchChain />
-      <SignMessage />
-      <Connections />
-      <BlockNumber /> */}
       <Balance />
-      {/* <ConnectorClient /> */}
       <SendTransaction />
     </>
   );
@@ -95,93 +71,6 @@ function Connect() {
   );
 }
 
-// function SwitchAccount() {
-//   const account = useAccount()
-//   const { connectors, switchAccount } = useSwitchAccount()
-
-//   return (
-//     <div>
-//       <h2>Switch Account</h2>
-
-//       {connectors.map((connector) => (
-//         <button
-//           disabled={account.connector?.uid === connector.uid}
-//           key={connector.uid}
-//           onClick={() => switchAccount({ connector })}
-//           type="button"
-//         >
-//           {connector.name}
-//         </button>
-//       ))}
-//     </div>
-//   )
-// }
-
-// function SwitchChain() {
-//   const chainId = useChainId()
-//   const { chains, switchChain, error } = useSwitchChain()
-
-//   return (
-//     <div>
-//       <h2>Switch Chain</h2>
-
-//       {chains.map((chain) => (
-//         <button
-//           disabled={chainId === chain.id}
-//           key={chain.id}
-//           onClick={() => switchChain({ chainId: chain.id })}
-//           type="button"
-//         >
-//           {chain.name}
-//         </button>
-//       ))}
-
-//       {error?.message}
-//     </div>
-//   )
-// }
-
-// function SignMessage() {
-//   const { data, signMessage } = useSignMessage()
-
-//   return (
-//     <div>
-//       <h2>Sign Message</h2>
-
-//       <form
-//         onSubmit={(event) => {
-//           event.preventDefault()
-//           const formData = new FormData(event.target as HTMLFormElement)
-//           signMessage({ message: formData.get('message') as string })
-//         }}
-//       >
-//         <input name="message" />
-//         <button type="submit">Sign Message</button>
-//       </form>
-
-//       {data}
-//     </div>
-//   )
-// }
-
-// function Connections() {
-//   const connections = useConnections()
-
-//   return (
-//     <div>
-//       <h2>Connections</h2>
-
-//       {connections.map((connection) => (
-//         <div key={connection.connector.uid}>
-//           <div>connector {connection.connector.name}</div>
-//           <div>accounts: {JSON.stringify(connection.accounts)}</div>
-//           <div>chainId: {connection.chainId}</div>
-//         </div>
-//       ))}
-//     </div>
-//   )
-// }
-
 function Balance() {
   const { data: account_ } = useBalance();
 
@@ -193,38 +82,6 @@ function Balance() {
     </div>
   );
 }
-
-// function BlockNumber() {
-//   const { data: default_ } = useBlockNumber({ watch: true })
-//   const { data: account_ } = useBlockNumber({
-//     watch: true,
-//   })
-//   const { data: optimism_ } = useBlockNumber({
-//     chainId: optimism.id,
-//     watch: true,
-//   })
-
-//   return (
-//     <div>
-//       <h2>Block Number</h2>
-
-//       <div>Block Number (Default Chain): {default_?.toString()}</div>
-//       <div>Block Number (Account Chain): {account_?.toString()}</div>
-//       <div>Block Number (Optimism): {optimism_?.toString()}</div>
-//     </div>
-//   )
-// }
-
-// function ConnectorClient() {
-//   const { data, error } = useConnectorClient()
-//   return (
-//     <div>
-//       <h2>Connector Client</h2>
-//       client {data?.account?.address} {data?.chain?.id}
-//       {error?.message}
-//     </div>
-//   )
-// }
 
 function SendTransaction() {
   const { data: hash, isPending, sendTransaction } = useSendTransaction();
