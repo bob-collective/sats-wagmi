@@ -210,7 +210,13 @@ abstract class SatsConnector {
    * const txId = await connector.sendToAddress(toAddress, amount);
    * ```
    */
-  abstract sendToAddress(toAddress: string, amount: number): Promise<string>;
+  async sendToAddress(toAddress: string, amount: number): Promise<string> {
+    const esploraClient = this.esploraClient;
+    const signedTx = await this.createAndSignTx(toAddress, amount);
+    const txId = await esploraClient.broadcastTx(signedTx);
+
+    return txId;
+  }
 
   /** Send BTC to an address with data in an OP_RETURN output
    * @param toAddress - The address to send BTC to. Can be any valid BTC address.
@@ -232,9 +238,7 @@ abstract class SatsConnector {
    */
   async sendToAddressWithOpReturn(toAddress: string, amount: number, data: string): Promise<string> {
     const esploraClient = this.esploraClient;
-
-    const signedTx = await this.createTxWithOpReturn(toAddress, amount, data);
-
+    const signedTx = await this.createAndSignTx(toAddress, amount, data);
     const txId = await esploraClient.broadcastTx(signedTx);
 
     return txId;
@@ -254,9 +258,8 @@ abstract class SatsConnector {
    * const signedTx = await connector.createTxWithOpReturn(toAddress, amount, data);
    * ```
    */
-  async createTxWithOpReturn(toAddress: string, amount: number, data: string): Promise<string> {
+  async createAndSignTx(toAddress: string, amount: number, data?: string): Promise<string> {
     this.validatePaymentAddress();
-
     const psbtBase64 = await createBitcoinPsbt(this.paymentAddress, toAddress, amount, this.publicKey, data);
 
     return this.signAllInputs(psbtBase64);

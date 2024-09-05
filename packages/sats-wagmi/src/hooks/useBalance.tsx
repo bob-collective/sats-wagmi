@@ -1,12 +1,17 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { EsploraClient } from '@gobob/bob-sdk';
 
 import { useSatsWagmi } from '../provider';
+import { INTERVAL } from '../utils';
 
 import { useAccount } from './useAccount';
 
+type GetBalanceReturnType = {
+  value: bigint;
+};
+
 type UseBalanceProps = Omit<
-  UseQueryOptions<bigint, unknown, bigint, (string | undefined)[]>,
+  UseQueryOptions<GetBalanceReturnType, unknown, GetBalanceReturnType, (string | undefined)[]>,
   'initialData' | 'queryFn' | 'queryKey' | 'enabled'
 >;
 
@@ -14,23 +19,19 @@ const useBalance = (props: UseBalanceProps = {}) => {
   const { network } = useSatsWagmi();
   const { address } = useAccount();
 
-  const apiUrl = useMemo(
-    () => (network === 'mainnet' ? 'https://btc-mainnet.gobob.xyz' : 'https://btc-testnet.gobob.xyz'),
-    [network]
-  );
-
   return useQuery({
     enabled: Boolean(address),
     queryKey: ['sats-balance', address],
     queryFn: async () => {
-      const res = await fetch(`${apiUrl}/address/${address}`);
-      const data = await res.json();
+      if (!address) return { value: BigInt(0) };
 
-      const chainBalance = BigInt(data.chain_stats.funded_txo_sum) - BigInt(data.chain_stats.spent_txo_sum);
-      const mempoolBalance = BigInt(data.mempool_stats.funded_txo_sum) - BigInt(data.mempool_stats.spent_txo_sum);
+      const esploraClient = new EsploraClient(network);
 
-      return chainBalance + mempoolBalance;
+      const balance = await esploraClient.getBalance(address);
+
+      return { value: BigInt(balance) };
     },
+    refetchInterval: INTERVAL.SECONDS_10,
     ...props
   });
 };

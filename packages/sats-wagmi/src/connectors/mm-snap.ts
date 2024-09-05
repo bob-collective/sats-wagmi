@@ -198,13 +198,26 @@ class MMSnapConnector extends SatsConnector {
     return pubkey.toString('hex');
   }
 
-  signMessage(): Promise<string> {
-    throw new Error('Not implemented');
-  }
+  async signMessage(message: string): Promise<string> {
+    try {
+      return (await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: {
+          snapId,
+          request: {
+            method: 'btc_signMessage',
+            params: {
+              message,
+              hdPath: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork)
+            }
+          }
+        }
+      })) as string;
+    } catch (err: any) {
+      const error = new SnapError(err?.message || 'Could not sign message');
 
-  // FIXME: Refactor using btc-signer
-  sendToAddress(): Promise<string> {
-    throw new Error('Method not implemented.');
+      throw error;
+    }
   }
 
   async signInput(inputIndex: number, psbt: Psbt) {

@@ -1,0 +1,29 @@
+{
+  "name": "vite-react",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@gobob/sats-wagmi": "workspace:*",
+    "@tanstack/query-sync-storage-persister": "5.0.5",
+    "@tanstack/react-query": ">=5.45.1",
+    "@tanstack/react-query-persist-client": "5.0.5",
+    "idb-keyval": "^6.2.1",
+    "react": ">=18.3.1",
+    "react-dom": ">=18.3.1",
+    "viem": "2.*"
+  },
+  "devDependencies": {
+    "@tanstack/react-query-devtools": "5.0.5",
+    "@types/react": ">=18.3.1",
+    "@types/react-dom": ">=18.3.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "buffer": "^6.0.3",
+    "vite": "^5.2.11",
+    "vite-plugin-node-polyfills": "^0.22.0"
+  }
+}
