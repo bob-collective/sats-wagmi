@@ -202,11 +202,6 @@ class MMSnapConnector extends SatsConnector {
     throw new Error('Not implemented');
   }
 
-  // FIXME: Refactor using btc-signer
-  sendToAddress(): Promise<string> {
-    throw new Error('Method not implemented.');
-  }
-
   async signInput(inputIndex: number, psbt: Psbt) {
     try {
       const psbtBase64 = await ethereum.request({
