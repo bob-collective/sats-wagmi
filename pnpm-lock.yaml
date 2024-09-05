@@ -238,9 +238,6 @@ importers:
 
   playgrounds/vite-react:
     dependencies:
-      '@gobob/bob-sdk':
-        specifier: ^2.2.5
-        version: 2.2.5
       '@gobob/sats-wagmi':
         specifier: workspace:*
         version: link:../../packages/sats-wagmi

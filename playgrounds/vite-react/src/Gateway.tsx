@@ -1,56 +1,10 @@
 import type { FormEvent } from 'react';
 
-import { useAccount } from '@gobob/sats-wagmi';
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
-import { GatewaySDK } from '@gobob/bob-sdk';
+import { useSendToGateway } from '@gobob/sats-wagmi';
 import { type Hex, parseUnits } from 'viem';
 
-function parseBtc(ether: string) {
-  return parseUnits(ether, 8);
-}
-
-const useGateway = (
-  props: Omit<
-    UseMutationOptions<string | undefined, unknown, { evmAddress: string; value: bigint }, unknown>,
-    'mutationKey' | 'mutationFn'
-  > = {}
-) => {
-  const { address: btcAddress, connector } = useAccount();
-
-  return useMutation({
-    mutationKey: ['sats-gateway', btcAddress],
-    mutationFn: async ({ evmAddress, value }: { evmAddress: string; value: bigint }) => {
-      if (!connector) return undefined;
-      if (!btcAddress) return undefined;
-
-      const gatewaySDK = new GatewaySDK('bob-sepolia');
-
-      const params = {
-        fromChain: 'bitcoin',
-        toChain: 'bob-sepolia',
-        fromToken: 'BTC',
-        toToken: 'tBTC',
-        gasRefill: 2000,
-        fromUserAddress: btcAddress,
-        toUserAddress: evmAddress,
-        amount: Number(value)
-      };
-      const quote = await gatewaySDK.getQuote(params);
-
-      const { uuid, psbtBase64 } = await gatewaySDK.startOrder(quote, params);
-
-      if (!psbtBase64) throw new Error('No psbt');
-
-      const bitcoinTxHex = await connector.signAllInputs(psbtBase64);
-
-      return await gatewaySDK.finalizeOrder(uuid, bitcoinTxHex);
-    },
-    ...props
-  });
-};
-
 function Gateway() {
-  const { data: hash, isPending, mutate: onramp } = useGateway();
+  const { data: hash, isPending, sendToGateway } = useSendToGateway({ toChain: 'bob-sepolia' });
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -58,7 +12,7 @@ function Gateway() {
     const evmAddress = formData.get('address') as Hex;
     const value = formData.get('value') as string;
 
-    onramp({ evmAddress, value: parseBtc(value) });
+    sendToGateway({ toToken: 'tBTC', evmAddress, value: parseUnits(value, 8) });
   }
 
   return (
