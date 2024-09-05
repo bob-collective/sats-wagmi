@@ -10,14 +10,7 @@
     "btc wallet connector hooks",
     "btc wallet connector config"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
-  },
+  "main": "src/index.ts",
   "files": [
     "dist"
   ],
@@ -38,7 +31,9 @@
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "clean": "rimraf dist .turbo",
     "typecheck": "tsc --noEmit",
-    "build": "tsup src/index.ts --dts"
+    "build": "tsup src/index.ts --dts",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore"
   },
   "peerDependencies": {
     "react": ">=18",
