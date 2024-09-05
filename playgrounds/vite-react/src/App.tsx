@@ -6,7 +6,8 @@ import {
   useBalance,
   useConnect,
   useDisconnect,
-  useSendTransaction
+  useSendTransaction,
+  useSignMessage
   // useWaitForTransactionReceipt,
 } from '@gobob/sats-wagmi';
 
@@ -23,6 +24,7 @@ function App() {
     <>
       <Account />
       <Connect />
+      <SignMessage />
       <Balance />
       <SendTransaction />
     </>
@@ -67,6 +69,30 @@ function Connect() {
       ))}
       <div>{status}</div>
       <div>{error?.message}</div>
+    </div>
+  );
+}
+
+function SignMessage() {
+  const { data, signMessage } = useSignMessage();
+
+  return (
+    <div>
+      <h2>Sign Message</h2>
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          const formData = new FormData(event.target as HTMLFormElement);
+
+          signMessage({ message: formData.get('message') as string });
+        }}
+      >
+        <input name='message' />
+        <button type='submit'>Sign Message</button>
+      </form>
+
+      {data}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { useSatsWagmi } from '../provider';
 import { useAccount } from './useAccount';
 
 type UseSendTransactionProps = Omit<
-  UseMutationOptions<any, unknown, { to: string; value: bigint }, unknown>,
+  UseMutationOptions<string | undefined, unknown, { to: string; value: bigint }, unknown>,
   'mutationKey' | 'mutationFn'
 >;
 
