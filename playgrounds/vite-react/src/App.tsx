@@ -11,6 +11,8 @@ import {
   // useWaitForTransactionReceipt,
 } from '@gobob/sats-wagmi';
 
+import Gateway from './Gateway.tsx';
+
 function formatBtc(sats: bigint) {
   return formatUnits(sats, 8);
 }
@@ -27,6 +29,7 @@ function App() {
       <SignMessage />
       <Balance />
       <SendTransaction />
+      <Gateway />
     </>
   );
 }

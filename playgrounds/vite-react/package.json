@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@gobob/sats-wagmi": "workspace:*",
+    "@gobob/bob-sdk": "^2.2.5",
     "@tanstack/query-sync-storage-persister": "5.0.5",
     "@tanstack/react-query": ">=5.45.1",
     "@tanstack/react-query-persist-client": "5.0.5",
