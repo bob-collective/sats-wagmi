@@ -3,29 +3,34 @@ import { GatewayQuoteParams, GatewaySDK } from '@gobob/bob-sdk';
 
 import { useAccount } from './useAccount';
 
-type SendToGatewayParams = {
+type SendGatewayTransactionParams = {
   toToken: string;
   evmAddress: string;
   value: bigint;
 };
 
-type UseSendToGatewayProps = Omit<
+type UseSendGatewayTransactionProps = Omit<
   { gatewaySDK?: GatewaySDK } & Omit<
     Optional<
       GatewayQuoteParams,
       'fromUserAddress' | 'toUserAddress' | 'amount' | 'toToken' | 'fromChain' | 'fromToken'
     >,
     'toChain'
-  > & { toChain: 'bob' | 'bob-sepolia' } & UseMutationOptions<string | undefined, Error, SendToGatewayParams, unknown>,
+  > & { toChain: 'bob' | 'bob-sepolia' } & UseMutationOptions<
+      string | undefined,
+      Error,
+      SendGatewayTransactionParams,
+      unknown
+    >,
   'mutationKey' | 'mutationFn'
 >;
 
-const useSendToGateway = ({ gatewaySDK, toChain = 'bob', ...props }: UseSendToGatewayProps) => {
+const useSendGatewayTransaction = ({ gatewaySDK, toChain = 'bob', ...props }: UseSendGatewayTransactionProps) => {
   const { address: btcAddress, publicKey: btcPublicKey, connector } = useAccount();
 
   const { mutate, mutateAsync, ...result } = useMutation({
     mutationKey: ['sats-gateway', btcAddress],
-    mutationFn: async ({ toToken, evmAddress, value }: SendToGatewayParams) => {
+    mutationFn: async ({ toToken, evmAddress, value }: SendGatewayTransactionParams) => {
       if (!connector) return undefined;
       if (!btcAddress) return undefined;
 
@@ -58,9 +63,9 @@ const useSendToGateway = ({ gatewaySDK, toChain = 'bob', ...props }: UseSendToGa
 
   return {
     ...result,
-    sendToGateway: mutate,
-    sendToGatewayAsync: mutateAsync
+    sendGatewayTransaction: mutate,
+    sendGatewayTransactionAsync: mutateAsync
   };
 };
 
-export { useSendToGateway };
+export { useSendGatewayTransaction };

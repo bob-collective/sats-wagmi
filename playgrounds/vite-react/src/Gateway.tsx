@@ -1,10 +1,15 @@
 import type { FormEvent } from 'react';
 
-import { useSendToGateway } from '@gobob/sats-wagmi';
+import { useSendGatewayTransaction } from '@gobob/sats-wagmi';
 import { type Hex, parseUnits } from 'viem';
 
 function Gateway() {
-  const { data: hash, error, isPending, sendToGateway } = useSendToGateway({ toChain: 'bob-sepolia' });
+  const {
+    data: hash,
+    error,
+    isPending,
+    sendGatewayTransaction
+  } = useSendGatewayTransaction({ toChain: 'bob-sepolia' });
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -12,7 +17,7 @@ function Gateway() {
     const evmAddress = formData.get('address') as Hex;
     const value = formData.get('value') as string;
 
-    sendToGateway({ toToken: 'tBTC', evmAddress, value: parseUnits(value, 8) });
+    sendGatewayTransaction({ toToken: 'tBTC', evmAddress, value: parseUnits(value, 8) });
   }
 
   return (

@@ -6,4 +6,4 @@ export * from './useFeeRate';
 export * from './useFeeEstimate';
 export * from './useSendTransaction';
 export * from './useSignMessage';
-export * from './useSendToGateway';
+export * from './useSendGatewayTransaction';
