@@ -1,6 +1,5 @@
 ---
-"@gobob/sats-wagmi": patch
-"vite-react": patch
+"@gobob/sats-wagmi": minor
 ---
 
 Add more hooks (including BOB Gateway example)
