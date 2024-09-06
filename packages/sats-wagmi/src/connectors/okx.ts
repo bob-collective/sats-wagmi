@@ -6,14 +6,14 @@ import { PsbtInputAccounts, SatsConnector } from './base';
 
 type WalletNetwork = 'livenet' | 'testnet';
 
-const getLibNetwork = (network: WalletNetwork): Network => {
-  switch (network) {
-    case 'livenet':
-      return Network.mainnet;
-    case 'testnet':
-      return Network.testnet;
-  }
-};
+// const getLibNetwork = (network: WalletNetwork): Network => {
+//   switch (network) {
+//     case 'livenet':
+//       return Network.mainnet;
+//     case 'testnet':
+//       return Network.testnet;
+//   }
+// };
 
 type AccountChangeEventParams = { address: string; publicKey: string; compressedPublicKey: string };
 
@@ -74,10 +74,15 @@ type OKXWallet = {
   ) => Promise<string>;
 };
 
+type OKXWalletTestnet = Pick<OKXWallet, 'connect' | 'signMessage' | 'signPsbt'>;
+
 declare global {
   interface Window {
     okxwallet: {
       bitcoin: OKXWallet;
+      // NOTE: this doesn't work right now because it defaults to p2tr
+      // but we have public key so could transform?
+      bitcoinTestnet: OKXWalletTestnet;
     };
   }
 }
@@ -87,37 +92,38 @@ class OKXConnector extends SatsConnector {
     super(network, 'OKX Wallet', 'OKX Wallet', 'https://www.okx.com/web3', okxLogo);
   }
 
+  private getSource() {
+    return this.network === Network.mainnet ? window?.okxwallet?.bitcoin : window?.okxwallet?.bitcoinTestnet;
+  }
+
   async connect(): Promise<void> {
-    const network = await window.okxwallet.bitcoin.getNetwork();
-    const mappedNetwork = getLibNetwork(network);
+    // const network = await window.okxwallet.bitcoin.getNetwork();
+    // const mappedNetwork = getLibNetwork(network);
 
-    if (mappedNetwork !== this.network) {
-      throw new Error(`Invalid Network. Please switch to Bitcoin ${this.network}.`);
-    }
+    // if (mappedNetwork !== this.network) {
+    //   throw new Error(`Invalid Network. Please switch to Bitcoin ${this.network}.`);
+    // }
 
-    const [accounts, publickKey] = await Promise.all([
-      window.okxwallet.bitcoin.requestAccounts(),
-      window.okxwallet.bitcoin.getPublicKey()
-    ]);
+    const { address, publicKey } = await this.getSource().connect();
 
-    this.paymentAddress = accounts[0];
-    this.ordinalsAddress = accounts[0];
-    this.publicKey = publickKey;
+    this.paymentAddress = address;
+    this.publicKey = publicKey;
 
-    window.okxwallet.bitcoin.on('accountChanged', this.changeAccount);
+    // window.okxwallet.bitcoin.on('accountChanged', this.changeAccount);
   }
 
   signMessage(message: string) {
-    return window.okxwallet.bitcoin.signMessage(message);
+    return this.getSource().signMessage(message);
   }
 
-  on(callback: (account: string) => void): void {
-    window.okxwallet.bitcoin.on('accountChanged', ({ address, publicKey, compressedPublicKey }) => {
-      callback(address);
+  /** @dev only for mainnet */
+  // on(callback: (account: string) => void): void {
+  //   window.okxwallet.bitcoin.on('accountChanged', ({ address, publicKey, compressedPublicKey }) => {
+  //     callback(address);
 
-      this.changeAccount({ address, publicKey, compressedPublicKey });
-    });
-  }
+  //     this.changeAccount({ address, publicKey, compressedPublicKey });
+  //   });
+  // }
 
   removeListener(): void {}
 
@@ -132,6 +138,7 @@ class OKXConnector extends SatsConnector {
     return this.ready;
   }
 
+  /** @dev only for mainnet */
   async sendToAddress(toAddress: string, amount: number): Promise<string> {
     return window.okxwallet.bitcoin.sendBitcoin(toAddress, amount);
   }
@@ -161,7 +168,7 @@ class OKXConnector extends SatsConnector {
       };
     });
 
-    const signedPsbtHex = await window.okxwallet.bitcoin.signPsbt(psbtHex, {
+    const signedPsbtHex = await this.getSource().signPsbt(psbtHex, {
       autoFinalized: false,
       toSignInputs: toSignInputs
     });
