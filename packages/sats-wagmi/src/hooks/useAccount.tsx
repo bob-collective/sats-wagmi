@@ -21,9 +21,11 @@ const useAccount = ({ onConnect }: UseAccountProps = {}) => {
 
       onConnect?.({ address, connector });
 
+      const publicKey = connector.getPublicKey();
+
       const addressType = address ? getAddressInfo(address).type : undefined;
 
-      return { address, type: addressType };
+      return { address, type: addressType, publicKey };
     },
     enabled: !!connector
   });
@@ -42,6 +44,7 @@ const useAccount = ({ onConnect }: UseAccountProps = {}) => {
     connector,
     address: data?.address,
     addressType: data?.type,
+    publicKey: data?.publicKey,
     error,
     isError,
     isLoading,

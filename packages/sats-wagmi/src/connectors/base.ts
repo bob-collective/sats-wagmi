@@ -137,11 +137,7 @@ abstract class SatsConnector {
   /** Return the public key of the connected address.
    * @returns The public key of the connected address.
    */
-  async getPublicKey(): Promise<string> {
-    if (!this.publicKey) {
-      throw new Error('Something went wrong while connecting');
-    }
-
+  getPublicKey(): string | undefined {
     return this.publicKey;
   }
 

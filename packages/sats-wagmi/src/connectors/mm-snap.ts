@@ -133,7 +133,7 @@ class MMSnapConnector extends SatsConnector {
       }
 
       this.extendedPublicKey = await this.getExtendedPublicKey();
-      this.publicKey = await this.getPublicKey();
+      this.publicKey = this.getPublicKey();
       // Set the address to P2WPKH
       this.paymentAddress = addressFromExtPubKey(
         this.bip32,
@@ -181,7 +181,7 @@ class MMSnapConnector extends SatsConnector {
     }
   }
 
-  async getPublicKey(): Promise<string> {
+  getPublicKey(): string | undefined {
     if (!this.extendedPublicKey) {
       throw new Error('Something wrong with connect');
     }
