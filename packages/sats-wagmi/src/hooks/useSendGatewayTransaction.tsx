@@ -29,7 +29,7 @@ const useSendGatewayTransaction = ({ gatewaySDK, toChain = 'bob', ...props }: Us
   const { address: btcAddress, publicKey: btcPublicKey, connector } = useAccount();
 
   const { mutate, mutateAsync, ...result } = useMutation({
-    mutationKey: ['sats-gateway', btcAddress],
+    mutationKey: ['sats-send-gateway-transaction', btcAddress],
     mutationFn: async ({ toToken, evmAddress, value }: SendGatewayTransactionParams) => {
       if (!connector) return undefined;
       if (!btcAddress) return undefined;
