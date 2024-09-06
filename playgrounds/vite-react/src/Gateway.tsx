@@ -4,7 +4,7 @@ import { useSendToGateway } from '@gobob/sats-wagmi';
 import { type Hex, parseUnits } from 'viem';
 
 function Gateway() {
-  const { data: hash, isPending, sendToGateway } = useSendToGateway({ toChain: 'bob-sepolia' });
+  const { data: hash, error, isPending, sendToGateway } = useSendToGateway({ toChain: 'bob-sepolia' });
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,6 +26,7 @@ function Gateway() {
         </button>
       </form>
       {hash && <div>Transaction Hash: {hash}</div>}
+      {error && <div>Error: {error.message}</div>}
     </div>
   );
 }

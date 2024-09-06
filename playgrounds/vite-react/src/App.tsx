@@ -113,7 +113,7 @@ function Balance() {
 }
 
 function SendTransaction() {
-  const { data: hash, isPending, sendTransaction } = useSendTransaction();
+  const { data: hash, error, isPending, sendTransaction } = useSendTransaction();
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -142,9 +142,7 @@ function SendTransaction() {
       {hash && <div>Transaction Hash: {hash}</div>}
       {/* {isConfirming && 'Waiting for confirmation...'}
       {isConfirmed && 'Transaction confirmed.'} */}
-      {/* {error && (
-        <div>Error: {(error as BaseError).shortMessage || error.message}</div>
-      )} */}
+      {error && <div>Error: {error.message}</div>}
     </div>
   );
 }

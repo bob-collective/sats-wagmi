@@ -16,17 +16,12 @@ type UseSendToGatewayProps = Omit<
       'fromUserAddress' | 'toUserAddress' | 'amount' | 'toToken' | 'fromChain' | 'fromToken'
     >,
     'toChain'
-  > & { toChain: 'bob' | 'bob-sepolia' } & UseMutationOptions<
-      string | undefined,
-      unknown,
-      SendToGatewayParams,
-      unknown
-    >,
+  > & { toChain: 'bob' | 'bob-sepolia' } & UseMutationOptions<string | undefined, Error, SendToGatewayParams, unknown>,
   'mutationKey' | 'mutationFn'
 >;
 
 const useSendToGateway = ({ gatewaySDK, toChain = 'bob', ...props }: UseSendToGatewayProps) => {
-  const { address: btcAddress, connector } = useAccount();
+  const { address: btcAddress, publicKey: btcPublicKey, connector } = useAccount();
 
   const { mutate, mutateAsync, ...result } = useMutation({
     mutationKey: ['sats-gateway', btcAddress],
@@ -44,6 +39,7 @@ const useSendToGateway = ({ gatewaySDK, toChain = 'bob', ...props }: UseSendToGa
         toToken,
         gasRefill: props.gasRefill || 2000,
         fromUserAddress: btcAddress,
+        fromUserPublicKey: btcPublicKey,
         toUserAddress: evmAddress,
         amount: Number(value)
       };
