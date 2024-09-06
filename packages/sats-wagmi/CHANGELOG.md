@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.0
+
+### Minor Changes
+
+- [#68](https://github.com/bob-collective/sats-wagmi/pull/68) [`6f109a1534d4dc58d538c9e90fbf6b909ecd923f`](https://github.com/bob-collective/sats-wagmi/commit/6f109a1534d4dc58d538c9e90fbf6b909ecd923f) Thanks [@gregdhill](https://github.com/gregdhill)! - Add more hooks (including BOB Gateway example)
+
 ## 0.2.5
 
 ### Patch Changes
