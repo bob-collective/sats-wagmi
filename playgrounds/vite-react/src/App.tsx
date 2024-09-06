@@ -7,8 +7,8 @@ import {
   useConnect,
   useDisconnect,
   useSendTransaction,
-  useSignMessage
-  // useWaitForTransactionReceipt,
+  useSignMessage,
+  useWaitForTransactionReceipt
 } from '@gobob/sats-wagmi';
 
 import Gateway from './Gateway.tsx';
@@ -124,10 +124,9 @@ function SendTransaction() {
     sendTransaction({ to, value: parseBtc(value) });
   }
 
-  // const { isLoading: isConfirming, isSuccess: isConfirmed } =
-  //   useWaitForTransactionReceipt({
-  //     hash,
-  //   })
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash
+  });
 
   return (
     <div>
@@ -140,8 +139,8 @@ function SendTransaction() {
         </button>
       </form>
       {hash && <div>Transaction Hash: {hash}</div>}
-      {/* {isConfirming && 'Waiting for confirmation...'}
-      {isConfirmed && 'Transaction confirmed.'} */}
+      {isConfirming && 'Waiting for confirmation...'}
+      {isConfirmed && 'Transaction confirmed.'}
       {error && <div>Error: {error.message}</div>}
     </div>
   );

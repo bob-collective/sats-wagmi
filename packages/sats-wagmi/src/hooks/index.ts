@@ -7,3 +7,4 @@ export * from './useFeeEstimate';
 export * from './useSendTransaction';
 export * from './useSignMessage';
 export * from './useSendGatewayTransaction';
+export * from './useWaitForTransactionReceipt';
