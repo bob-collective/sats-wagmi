@@ -28,8 +28,8 @@ importers:
         specifier: ^0.0.7
         version: 0.0.7(react-dom@18.3.1)(react@18.3.1)
       '@storybook/addon-essentials':
-        specifier: ^7.4.0
-        version: 7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^8.2.9
+        version: 8.2.9(storybook@8.2.9)
       '@storybook/addon-interactions':
         specifier: ^7.4.0
         version: 7.6.20
@@ -3410,9 +3410,10 @@ packages:
       read-yaml-file: 1.1.0
     dev: true
 
-  /@mdx-js/react@2.3.0(react@18.3.1):
-    resolution: {integrity: sha512-zQH//gdOmuu7nt2oJR29vFhDv88oGPmVw6BggmrHeMI+xgEkp1B2dX9/bMBSYtK0dyLX/aOmesKS09g222K1/g==}
+  /@mdx-js/react@3.0.1(@types/react@18.3.5)(react@18.3.1):
+    resolution: {integrity: sha512-9ZrPIU4MGf6et1m1ov3zKf+q9+deetI51zprKB1D/z3NOb+rUxxtEl3mCjW5wTGh6VhRdwPueh1oRzi6ezkA8A==}
     peerDependencies:
+      '@types/react': '>=16'
       react: ^18.2.0
     dependencies:
       '@types/mdx': 2.0.13
@@ -4537,109 +4538,93 @@ packages:
       '@sinonjs/commons': 3.0.1
     dev: true
 
-  /@storybook/addon-actions@7.6.20:
-    resolution: {integrity: sha512-c/GkEQ2U9BC/Ew/IMdh+zvsh4N6y6n7Zsn2GIhJgcu9YEAa5aF2a9/pNgEGBMOABH959XE8DAOMERw/5qiLR8g==}
+  /@storybook/addon-actions@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-eh2teOqjga7aoClDVV+/b1gHJqsPwjiU1t+Hg/l4i2CkaBUNdYMEL90nR6fgReOdvvL5YhcPwJ8w38f9TrQcoQ==}
+    peerDependencies:
+      storybook: ^8.2.9
     dependencies:
-      '@storybook/core-events': 7.6.20
       '@storybook/global': 5.0.0
       '@types/uuid': 9.0.8
       dequal: 2.0.3
       polished: 4.3.1
+      storybook: 8.2.9
       uuid: 9.0.1
     dev: true
 
-  /@storybook/addon-backgrounds@7.6.20:
-    resolution: {integrity: sha512-a7ukoaXT42vpKsMxkseIeO3GqL0Zst2IxpCTq5dSlXiADrcemSF/8/oNpNW9C4L6F1Zdt+WDtECXslEm017FvQ==}
+  /@storybook/addon-backgrounds@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-eGmZAd742ORBbQ6JepzBCko/in62T4Xg9j9LVa+Cvz/7L1C/RQSuU6sUwbRAsXaz+PMVDksPDCUUNsXl3zUL7w==}
+    peerDependencies:
+      storybook: ^8.2.9
     dependencies:
       '@storybook/global': 5.0.0
       memoizerific: 1.11.3
+      storybook: 8.2.9
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-controls@7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-06ZT5Ce1sZW52B0s6XuokwjkKO9GqHlTUHvuflvd8wifxKlCmRvNUxjBvwh+ccGJ49ZS73LbMSLFgtmBEkCxbg==}
-    dependencies:
-      '@storybook/blocks': 7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
-      lodash: 4.17.21
-      ts-dedent: 2.2.0
-    transitivePeerDependencies:
-      - '@types/react'
-      - '@types/react-dom'
-      - encoding
-      - react
-      - react-dom
-      - supports-color
-    dev: true
-
-  /@storybook/addon-docs@7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-XNfYRhbxH5JP7B9Lh4W06PtMefNXkfpV39Gaoih5HuqngV3eoSL4RikZYOMkvxRGQ738xc6axySU3+JKcP1OZg==}
+  /@storybook/addon-controls@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-vaSE78KOE7SO0GrW4e+mdQphSNpvCX/FGybIRxyaKX9h8smoyUwRNHVyCS3ROHTwH324QWu7GDzsOVrnyXOv0A==}
     peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      storybook: ^8.2.9
     dependencies:
-      '@jest/transform': 29.7.0
-      '@mdx-js/react': 2.3.0(react@18.3.1)
-      '@storybook/blocks': 7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/client-logger': 7.6.20
-      '@storybook/components': 7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/csf-plugin': 7.6.20
-      '@storybook/csf-tools': 7.6.20
+      dequal: 2.0.3
+      lodash: 4.17.21
+      storybook: 8.2.9
+      ts-dedent: 2.2.0
+    dev: true
+
+  /@storybook/addon-docs@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-flDOxFIGmXg+6lVdwTLMOKsGob1WrT7rG98mn1SNW0Nxhg3Wg+9pQuq1GLxEzKtAgSflmu+xcBRfYhsogyDXkw==}
+    peerDependencies:
+      storybook: ^8.2.9
+    dependencies:
+      '@babel/core': 7.25.2
+      '@mdx-js/react': 3.0.1(@types/react@18.3.5)(react@18.3.1)
+      '@storybook/blocks': 8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)
+      '@storybook/csf-plugin': 8.2.9(storybook@8.2.9)
       '@storybook/global': 5.0.0
-      '@storybook/mdx2-csf': 1.1.0
-      '@storybook/node-logger': 7.6.20
-      '@storybook/postinstall': 7.6.20
-      '@storybook/preview-api': 7.6.20
-      '@storybook/react-dom-shim': 7.6.20(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/theming': 7.6.20(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/types': 7.6.20
+      '@storybook/react-dom-shim': 8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9)
+      '@types/react': 18.3.5
       fs-extra: 11.2.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      remark-external-links: 8.0.0
-      remark-slug: 6.1.0
+      rehype-external-links: 3.0.0
+      rehype-slug: 6.0.0
+      storybook: 8.2.9
       ts-dedent: 2.2.0
     transitivePeerDependencies:
-      - '@types/react'
-      - '@types/react-dom'
-      - encoding
       - supports-color
       - webpack-sources
     dev: true
 
-  /@storybook/addon-essentials@7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-hCupSOiJDeOxJKZSgH0x5Mb2Xqii6mps21g5hpxac1XjhQtmGflShxi/xOHhK3sNqrbgTSbScfpUP3hUlZO/2Q==}
+  /@storybook/addon-essentials@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-B2d3eznGZvPIyCVtYX0UhrYcEfK+3Y2sACmEWpSwtk8KXomFEsZnD95m397BYDRw3/X6qeSLWxqgMfqDTEDeMA==}
     peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      storybook: ^8.2.9
     dependencies:
-      '@storybook/addon-actions': 7.6.20
-      '@storybook/addon-backgrounds': 7.6.20
-      '@storybook/addon-controls': 7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/addon-docs': 7.6.20(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/addon-highlight': 7.6.20
-      '@storybook/addon-measure': 7.6.20
-      '@storybook/addon-outline': 7.6.20
-      '@storybook/addon-toolbars': 7.6.20
-      '@storybook/addon-viewport': 7.6.20
-      '@storybook/core-common': 7.6.20
-      '@storybook/manager-api': 7.6.20(react-dom@18.3.1)(react@18.3.1)
-      '@storybook/node-logger': 7.6.20
-      '@storybook/preview-api': 7.6.20
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+      '@storybook/addon-actions': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-backgrounds': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-controls': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-docs': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-highlight': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-measure': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-outline': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-toolbars': 8.2.9(storybook@8.2.9)
+      '@storybook/addon-viewport': 8.2.9(storybook@8.2.9)
+      storybook: 8.2.9
       ts-dedent: 2.2.0
     transitivePeerDependencies:
-      - '@types/react'
-      - '@types/react-dom'
-      - encoding
       - supports-color
       - webpack-sources
     dev: true
 
-  /@storybook/addon-highlight@7.6.20:
-    resolution: {integrity: sha512-7/x7xFdFyqCki5Dm3uBePldUs9l98/WxJ7rTHQuYqlX7kASwyN5iXPzuhmMRUhlMm/6G6xXtLabIpzwf1sFurA==}
+  /@storybook/addon-highlight@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-qdcazeNQoo9QKIq+LJJZZXvFZoLn+i4uhbt1Uf9WtW6oU/c1qxORGVD7jc3zsxbQN9nROVPbJ76sfthogxeqWA==}
+    peerDependencies:
+      storybook: ^8.2.9
     dependencies:
       '@storybook/global': 5.0.0
+      storybook: 8.2.9
     dev: true
 
   /@storybook/addon-interactions@7.6.20:
@@ -4666,10 +4651,13 @@ packages:
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-measure@7.6.20:
-    resolution: {integrity: sha512-i2Iq08bGfI7gZbG6Lb8uF/L287tnaGUR+2KFEmdBjH6+kgjWLiwfpanoPQpy4drm23ar0gUjX+L3Ri03VI5/Xg==}
+  /@storybook/addon-measure@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-XUfQtYRKWB2dfbPRmHuos816wt1JrLbtRld5ZC8J8ljeqZ4hFBPTQcgI5GAzZqjQuclLC0KuhlA/0bKxdxMMGA==}
+    peerDependencies:
+      storybook: ^8.2.9
     dependencies:
       '@storybook/global': 5.0.0
+      storybook: 8.2.9
       tiny-invariant: 1.3.3
     dev: true
 
@@ -4684,21 +4672,31 @@ packages:
       - react
     dev: true
 
-  /@storybook/addon-outline@7.6.20:
-    resolution: {integrity: sha512-TdsIQZf/TcDsGoZ1XpO+9nBc4OKqcMIzY4SrI8Wj9dzyFLQ37s08gnZr9POci8AEv62NTUOVavsxcafllkzqDQ==}
+  /@storybook/addon-outline@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-p22kI4W7MT0YJOCmg/FfhfH+NpZEDA5tgwstjazSg4ertyhaxziMwWZWiK2JCg0gOAfRJjoYjHz+6/u56iXwgQ==}
+    peerDependencies:
+      storybook: ^8.2.9
     dependencies:
       '@storybook/global': 5.0.0
+      storybook: 8.2.9
       ts-dedent: 2.2.0
     dev: true
 
-  /@storybook/addon-toolbars@7.6.20:
-    resolution: {integrity: sha512-5Btg4i8ffWTDHsU72cqxC8nIv9N3E3ObJAc6k0llrmPBG/ybh3jxmRfs8fNm44LlEXaZ5qrK/petsXX3UbpIFg==}
+  /@storybook/addon-toolbars@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-9LMZZ2jRD86Jh6KXedDbAYs4eHj9HtJA9VhSEE2wiqMGwXozpySi7B1GWniNzmFfcgMQ4JHfmD/OrBVTK7Ca/w==}
+    peerDependencies:
+      storybook: ^8.2.9
+    dependencies:
+      storybook: 8.2.9
     dev: true
 
-  /@storybook/addon-viewport@7.6.20:
-    resolution: {integrity: sha512-i8mIw8BjLWAVHEQsOTE6UPuEGQvJDpsu1XZnOCkpfTfPMz73m+3td/PmLG7mMT2wPnLu9IZncKLCKTAZRbt/YQ==}
+  /@storybook/addon-viewport@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-lyM24+DJEt8R0YZkJKee34NQWv0REACU6lYDalqJNdKS1sEwzLGWxg1hZXnw2JFdBID9NGVvyYU2w6LDozOB0g==}
+    peerDependencies:
+      storybook: ^8.2.9
     dependencies:
       memoizerific: 1.11.3
+      storybook: 8.2.9
     dev: true
 
   /@storybook/addons@7.6.17(react-dom@18.3.1)(react@18.3.1):
@@ -4748,6 +4746,37 @@ packages:
       - '@types/react-dom'
       - encoding
       - supports-color
+    dev: true
+
+  /@storybook/blocks@8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9):
+    resolution: {integrity: sha512-5276q/s/UL8arwftuBXovUNHqYo/HPQFMGXEmjVVAMXUyFjzEAfKj3+xU897J6AuL+7XVZG32WnqA+X6LJMrcQ==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      storybook: ^8.2.9
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@storybook/csf': 0.1.11
+      '@storybook/global': 5.0.0
+      '@storybook/icons': 1.2.10(react-dom@18.3.1)(react@18.3.1)
+      '@types/lodash': 4.17.7
+      color-convert: 2.0.1
+      dequal: 2.0.3
+      lodash: 4.17.21
+      markdown-to-jsx: 7.5.0(react@18.3.1)
+      memoizerific: 1.11.3
+      polished: 4.3.1
+      react: 18.3.1
+      react-colorful: 5.6.1(react-dom@18.3.1)(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      storybook: 8.2.9
+      telejson: 7.2.0
+      ts-dedent: 2.2.0
+      util-deprecate: 1.0.2
     dev: true
 
   /@storybook/builder-vite@7.6.20(typescript@5.5.4)(vite@4.5.3):
@@ -4948,6 +4977,17 @@ packages:
       - webpack-sources
     dev: true
 
+  /@storybook/csf-plugin@8.2.9(storybook@8.2.9):
+    resolution: {integrity: sha512-QQCFb3g12VQQEraDV1UfCmniGhQZKyT6oEt1Im6dzzPJj9NQk+6BjWoDep33CZhBHWoLryrMQd2fjuHxnFRNEA==}
+    peerDependencies:
+      storybook: ^8.2.9
+    dependencies:
+      storybook: 8.2.9
+      unplugin: 1.13.1
+    transitivePeerDependencies:
+      - webpack-sources
+    dev: true
+
   /@storybook/csf-tools@7.6.20:
     resolution: {integrity: sha512-rwcwzCsAYh/m/WYcxBiEtLpIW5OH1ingxNdF/rK9mtGWhJxXRDV8acPkFrF8rtFWIVKoOCXu5USJYmc3f2gdYQ==}
     dependencies:
@@ -4987,6 +5027,17 @@ packages:
 
   /@storybook/global@5.0.0:
     resolution: {integrity: sha512-FcOqPAXACP0I3oJ/ws6/rrPT9WGhu915Cg8D02a9YxLo0DE9zI+a9A5gRGvmQ09fiWPukqI8ZAEoQEdWUKMQdQ==}
+    dev: true
+
+  /@storybook/icons@1.2.10(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-310apKdDcjbbX2VSLWPwhEwAgjxTzVagrwucVZIdGPErwiAppX8KvBuWZgPo+rQLVrtH8S+pw1dbUwjcE6d7og==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: true
 
   /@storybook/manager-api@7.6.17(react-dom@18.3.1)(react@18.3.1):
@@ -5033,16 +5084,8 @@ packages:
       - react-dom
     dev: true
 
-  /@storybook/mdx2-csf@1.1.0:
-    resolution: {integrity: sha512-TXJJd5RAKakWx4BtpwvSNdgTDkKM6RkXU8GK34S/LhidQ5Pjz3wcnqb0TxEkfhK/ztbP8nKHqXFwLfa2CYkvQw==}
-    dev: true
-
   /@storybook/node-logger@7.6.20:
     resolution: {integrity: sha512-l2i4qF1bscJkOplNffcRTsgQWYR7J51ewmizj5YrTM8BK6rslWT1RntgVJWB1RgPqvx6VsCz1gyP3yW1oKxvYw==}
-    dev: true
-
-  /@storybook/postinstall@7.6.20:
-    resolution: {integrity: sha512-AN4WPeNma2xC2/K/wP3I/GMbBUyeSGD3+86ZFFJFO1QmE/Zea6E+1aVlTd1iKHQUcNkZ9bZTrqkhPGVYx10pIw==}
     dev: true
 
   /@storybook/preview-api@7.6.17:
@@ -5095,6 +5138,18 @@ packages:
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: true
+
+  /@storybook/react-dom-shim@8.2.9(react-dom@18.3.1)(react@18.3.1)(storybook@8.2.9):
+    resolution: {integrity: sha512-uCAjSQEsNk8somVn1j/I1G9G/uUax5byHseIIV0Eq3gVXttGd7gaWcP+TDHtqIaenWHx4l+hCSuCesxiLWmx4Q==}
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      storybook: ^8.2.9
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      storybook: 8.2.9
     dev: true
 
   /@storybook/react-vite@7.6.20(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)(vite@4.5.3):
@@ -5636,6 +5691,12 @@ packages:
       '@types/node': 22.5.4
     dev: true
 
+  /@types/hast@3.0.4:
+    resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
+    dependencies:
+      '@types/unist': 2.0.11
+    dev: true
+
   /@types/hoist-non-react-statics@3.3.5:
     resolution: {integrity: sha512-SbcrWzkKBw2cdwRTwQAswfpB9g9LJWfjtUeW/jvNwbhC8cpmmNYVePa+ncbUe0rGTQ7G3Ff6mYUN2VMfLVr+Sg==}
     dependencies:
@@ -5835,6 +5896,10 @@ packages:
 
   /@types/unist@2.0.11:
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
+    dev: true
+
+  /@types/unist@3.0.3:
+    resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
     dev: true
 
   /@types/uuid@9.0.8:
@@ -9552,8 +9617,8 @@ packages:
       through2: 4.0.2
     dev: true
 
-  /github-slugger@1.5.0:
-    resolution: {integrity: sha512-wIh+gKBI9Nshz2o46B0B3f5k/W+WI9ZAv6y5Dn5WJ5SK1t0TnDimB4WE5rmTD05ZAIn8HALCZVmCsvj0w0v0lw==}
+  /github-slugger@2.0.0:
+    resolution: {integrity: sha512-IaOQ9puYtjrkq7Y0Ygl9KDZnrf/aiUJYUpVf89y8kyaxbRG7Y1SrX/jaumrv81vc61+kiMempujsM3Yw7w5qcw==}
     dev: true
 
   /glob-parent@5.1.2:
@@ -9753,6 +9818,24 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       function-bind: 1.1.2
+
+  /hast-util-heading-rank@3.0.0:
+    resolution: {integrity: sha512-EJKb8oMUXVHcWZTDepnr+WNbfnXKFNf9duMesmr4S8SXTJBJ9M4Yok08pu9vxdJwdlGRhVumk9mEhkEvKGifwA==}
+    dependencies:
+      '@types/hast': 3.0.4
+    dev: true
+
+  /hast-util-is-element@3.0.0:
+    resolution: {integrity: sha512-Val9mnv2IWpLbNPqc/pUem+a7Ipj2aHacCwgNfTiK0vJKl0LF+4Ba4+v1oPHFpf3bLYmreq0/l3Gud9S5OH42g==}
+    dependencies:
+      '@types/hast': 3.0.4
+    dev: true
+
+  /hast-util-to-string@3.0.0:
+    resolution: {integrity: sha512-OGkAxX1Ua3cbcW6EJ5pT/tslVb90uViVkcJ4ZZIMW/R33DX/AkcJcRrPebPwJkHYwlDHXz4aIwvAAaAdtrACFA==}
+    dependencies:
+      '@types/hast': 3.0.4
+    dev: true
 
   /hmac-drbg@1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==}
@@ -9964,9 +10047,9 @@ packages:
     engines: {node: '>= 0.10'}
     dev: true
 
-  /is-absolute-url@3.0.3:
-    resolution: {integrity: sha512-opmNIX7uFnS96NtPmhWQgQx6/NYFgsUXYMllcfzwWKUMwfo8kku1TvE6hkNcH+Q1ts5cMVrsY7j0bxXQDciu9Q==}
-    engines: {node: '>=8'}
+  /is-absolute-url@4.0.1:
+    resolution: {integrity: sha512-/51/TKE88Lmm7Gc4/8btclNXWS+g50wXhYJq8HWIBAGUBnoAdRu1aXeh364t/O7wXDAcTJDP8PNuNKWUDWie+A==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
   /is-arguments@1.1.1:
@@ -11449,16 +11532,6 @@ packages:
       inherits: 2.0.4
       safe-buffer: 5.2.1
 
-  /mdast-util-definitions@4.0.0:
-    resolution: {integrity: sha512-k8AJ6aNnUkB7IE+5azR9h81O5EQ/cTDXtWdMq9Kk5KcEW/8ritU5CeLg/9HhOC++nALHBlaogJ5jz0Ybk3kPMQ==}
-    dependencies:
-      unist-util-visit: 2.0.3
-    dev: true
-
-  /mdast-util-to-string@1.1.0:
-    resolution: {integrity: sha512-jVU0Nr2B9X3MU4tSK7JP1CMkSvOj7X5l/GboG1tKRw52lLF1x2Ju92Ms9tNetCcbfX3hzlM73zYo2NKkWSfF/A==}
-    dev: true
-
   /media-typer@0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
@@ -12751,22 +12824,25 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /remark-external-links@8.0.0:
-    resolution: {integrity: sha512-5vPSX0kHoSsqtdftSHhIYofVINC8qmp0nctkeU9YoJwV3YfiBRiI6cbFRJ0oI/1F9xS+bopXG0m2KS8VFscuKA==}
+  /rehype-external-links@3.0.0:
+    resolution: {integrity: sha512-yp+e5N9V3C6bwBeAC4n796kc86M4gJCdlVhiMTxIrJG5UHDMh+PJANf9heqORJbt1nrCbDwIlAZKjANIaVBbvw==}
     dependencies:
-      extend: 3.0.2
-      is-absolute-url: 3.0.3
-      mdast-util-definitions: 4.0.0
-      space-separated-tokens: 1.1.5
-      unist-util-visit: 2.0.3
+      '@types/hast': 3.0.4
+      '@ungap/structured-clone': 1.2.0
+      hast-util-is-element: 3.0.0
+      is-absolute-url: 4.0.1
+      space-separated-tokens: 2.0.2
+      unist-util-visit: 5.0.0
     dev: true
 
-  /remark-slug@6.1.0:
-    resolution: {integrity: sha512-oGCxDF9deA8phWvxFuyr3oSJsdyUAxMFbA0mZ7Y1Sas+emILtO+e5WutF9564gDsEN4IXaQXm5pFo6MLH+YmwQ==}
+  /rehype-slug@6.0.0:
+    resolution: {integrity: sha512-lWyvf/jwu+oS5+hL5eClVd3hNdmwM1kAC0BUvEGD19pajQMIzcNUd/k9GsfQ+FfECvX+JE+e9/btsKH0EjJT6A==}
     dependencies:
-      github-slugger: 1.5.0
-      mdast-util-to-string: 1.1.0
-      unist-util-visit: 2.0.3
+      '@types/hast': 3.0.4
+      github-slugger: 2.0.0
+      hast-util-heading-rank: 3.0.0
+      hast-util-to-string: 3.0.0
+      unist-util-visit: 5.0.0
     dev: true
 
   /request-progress@3.0.0:
@@ -13207,8 +13283,8 @@ packages:
       whatwg-url: 7.1.0
     dev: true
 
-  /space-separated-tokens@1.1.5:
-    resolution: {integrity: sha512-q/JSVd1Lptzhf5bkYm4ob4iWPjx0KiRe3sRFBNrVqbJkFaBm5vbbowy1mymoPNLRa52+oadOhJ+K49wsSeSjTA==}
+  /space-separated-tokens@2.0.2:
+    resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
     dev: true
 
   /spawndamnit@2.0.0:
@@ -14142,23 +14218,25 @@ packages:
       crypto-random-string: 4.0.0
     dev: true
 
-  /unist-util-is@4.1.0:
-    resolution: {integrity: sha512-ZOQSsnce92GrxSqlnEEseX0gi7GH9zTJZ0p9dtu87WRb/37mMPO2Ilx1s/t9vBHrFhbgweUwb+t7cIn5dxPhZg==}
+  /unist-util-is@6.0.0:
+    resolution: {integrity: sha512-2qCTHimwdxLfz+YzdGfkqNlH0tLi9xjTnHddPmJwtIG9MGsdbutfTc4P+haPD7l7Cjxf/WZj+we5qfVPvvxfYw==}
+    dependencies:
+      '@types/unist': 3.0.3
     dev: true
 
-  /unist-util-visit-parents@3.1.1:
-    resolution: {integrity: sha512-1KROIZWo6bcMrZEwiH2UrXDyalAa0uqzWCxCJj6lPOvTve2WkfgCytoDTPaMnodXh1WrXOq0haVYHj99ynJlsg==}
+  /unist-util-visit-parents@6.0.1:
+    resolution: {integrity: sha512-L/PqWzfTP9lzzEa6CKs0k2nARxTdZduw3zyh8d2NVBnsyvHjSX4TWse388YrrQKbvI8w20fGjGlhgT96WwKykw==}
     dependencies:
-      '@types/unist': 2.0.11
-      unist-util-is: 4.1.0
+      '@types/unist': 3.0.3
+      unist-util-is: 6.0.0
     dev: true
 
-  /unist-util-visit@2.0.3:
-    resolution: {integrity: sha512-iJ4/RczbJMkD0712mGktuGpm/U4By4FfDonL7N/9tATGIF4imikjOuagyMY53tnZq3NP6BcmlrHhEKAfGWjh7Q==}
+  /unist-util-visit@5.0.0:
+    resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
     dependencies:
-      '@types/unist': 2.0.11
-      unist-util-is: 4.1.0
-      unist-util-visit-parents: 3.1.1
+      '@types/unist': 3.0.3
+      unist-util-is: 6.0.0
+      unist-util-visit-parents: 6.0.1
     dev: true
 
   /universalify@0.1.2:
