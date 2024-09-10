@@ -27,43 +27,19 @@ const getUnisatNetwork = (network: Network): WalletNetwork => {
 
 type AccountsChangedEvent = (event: 'accountsChanged', handler: (accounts: Array<string>) => void) => void;
 
-type Inscription = {
-  inscriptionId: string;
-  inscriptionNumber: string;
-  address: string;
-  outputValue: string;
-  content: string;
-  contentLength: string;
-  contentType: string;
-  preview: string;
-  timestamp: number;
-  offset: number;
-  genesisTransaction: string;
-  location: string;
-};
-
-type getInscriptionsResult = { total: number; list: Inscription[] };
-
-type SendInscriptionsResult = { txid: string };
-
 type Balance = { confirmed: number; unconfirmed: number; total: number };
 
-type Unisat = {
+// https://docs.bitkeep.com/en/docs/guide/wallet/btc.html
+// https://developers.binance.com/docs/binance-w3w/bitcoin-provider
+// https://docs.unisat.io/dev/unisat-developer-center/unisat-wallet
+type UniSatBase = {
   requestAccounts: () => Promise<string[]>;
   getAccounts: () => Promise<string[]>;
-  on: AccountsChangedEvent;
-  removeListener: AccountsChangedEvent;
-  getInscriptions: (cursor: number, size: number) => Promise<getInscriptionsResult>;
-  sendInscription: (
-    address: string,
-    inscriptionId: string,
-    options?: { feeRate: number }
-  ) => Promise<SendInscriptionsResult>;
-  switchNetwork: (network: 'livenet' | 'testnet') => Promise<void>;
   getNetwork: () => Promise<WalletNetwork>;
+  switchNetwork: (network: WalletNetwork) => Promise<void>;
   getPublicKey: () => Promise<string>;
   getBalance: () => Promise<Balance>;
-  sendBitcoin: (address: string, atomicAmount: number, options?: { feeRate: number }) => Promise<string>;
+  signMessage: (msg: string, type?: 'ecdsa' | 'bip322-simple') => Promise<string>;
   signPsbt: (
     psbtHex: string,
     options?: {
@@ -77,30 +53,44 @@ type Unisat = {
       }[];
     }
   ) => Promise<string>;
-  signMessage: (msg: string, type?: 'ecdsa' | 'bip322-simple') => Promise<string>;
+  on: AccountsChangedEvent;
+  removeListener: AccountsChangedEvent;
 };
 
-type WalletSource = 'bitget' | 'unisat';
+// additional methods not supported by all connectors
+type UniSatExt = {
+  sendBitcoin: (address: string, atomicAmount: number, options?: { feeRate: number }) => Promise<string>;
+};
+
+type WalletSource = 'bitkeep' | 'binancew3w' | 'unisat';
 
 declare global {
   interface Window {
-    unisat: Unisat;
-    bitget: {
-      unisat: Unisat;
+    unisat: UniSatBase & UniSatExt;
+    bitkeep: {
+      unisat: UniSatBase & UniSatExt;
+    };
+    binancew3w: {
+      unisat: UniSatBase;
     };
   }
 }
 
 const metadata: Record<WalletSource, { id: string; name: string; homepage: string; icon?: string }> = {
-  bitget: {
-    id: 'com.bitget.web3',
+  bitkeep: {
+    id: 'bitget',
     name: 'Bitget Wallet',
     homepage: 'https://web3.bitget.com',
     icon: bitgetLogo
   },
+  binancew3w: {
+    id: 'binancew3w',
+    name: 'Binance Web3 Wallet',
+    homepage: 'https://www.binance.com/en-GB'
+  },
   unisat: {
     id: 'unisat',
-    name: 'Unisat',
+    name: 'UniSat',
     homepage: 'https://unisat.io/'
   }
 };
@@ -116,12 +106,19 @@ class UnisatConnector extends SatsConnector {
     this.source = source;
   }
 
-  private getSource() {
-    return this.source === 'bitget' ? window?.bitget?.unisat : window?.unisat;
+  private getSource(): UniSatBase | (UniSatBase & UniSatExt) | undefined {
+    switch (this.source) {
+      case 'bitkeep':
+        return window?.bitkeep?.unisat || undefined;
+      case 'binancew3w':
+        return window?.binancew3w?.unisat || undefined;
+      case 'unisat':
+        return window?.unisat || undefined;
+    }
   }
 
   async connect(): Promise<void> {
-    const walletSource = this.getSource();
+    const walletSource = this.getSource()!;
 
     const network = await walletSource.getNetwork();
     const mappedNetwork = getLibNetwork(network);
@@ -132,14 +129,14 @@ class UnisatConnector extends SatsConnector {
       await walletSource.switchNetwork(expectedNetwork);
     }
 
-    const [accounts, publicKey] = await Promise.all([window.unisat.requestAccounts(), window.unisat.getPublicKey()]);
+    const [accounts, publicKey] = await Promise.all([walletSource.requestAccounts(), walletSource.getPublicKey()]);
 
     this.paymentAddress = accounts[0];
     this.ordinalsAddress = accounts[0];
     this.publicKey = publicKey;
 
     // https://github.com/unisat-wallet/extension/blob/04cbfd6e7f7953815d35d8f77df457388fea2707/src/background/controller/provider/controller.ts#L39
-    window.unisat.on('accountsChanged', ([account]) => this.changeAccount(account));
+    walletSource.on('accountsChanged', ([account]) => this.changeAccount(account));
   }
 
   disconnect() {
@@ -148,11 +145,11 @@ class UnisatConnector extends SatsConnector {
   }
 
   signMessage(message: string) {
-    return this.getSource().signMessage(message);
+    return this.getSource()!.signMessage(message);
   }
 
   on(callback: (account: string) => void): void {
-    this.getSource().on('accountsChanged', ([account]) => {
+    this.getSource()!.on('accountsChanged', ([account]) => {
       callback(account);
 
       this.changeAccount(account);
@@ -160,7 +157,7 @@ class UnisatConnector extends SatsConnector {
   }
 
   removeListener(callback: (account: string) => void): void {
-    this.getSource().removeListener('accountsChanged', ([account]) => {
+    this.getSource()!.removeListener('accountsChanged', ([account]) => {
       callback(account);
 
       this.changeAccount(account);
@@ -169,7 +166,7 @@ class UnisatConnector extends SatsConnector {
 
   async changeAccount(account: string) {
     this.paymentAddress = account;
-    this.publicKey = await this.getSource().getPublicKey();
+    this.publicKey = await this.getSource()!.getPublicKey();
   }
 
   async isReady() {
@@ -179,7 +176,13 @@ class UnisatConnector extends SatsConnector {
   }
 
   async sendToAddress(toAddress: string, amount: number): Promise<string> {
-    return this.getSource().sendBitcoin(toAddress, amount);
+    const source = this.getSource()!;
+
+    if ('sendBitcoin' in source) {
+      return source.sendBitcoin(toAddress, amount);
+    } else {
+      return super.sendToAddress(toAddress, amount);
+    }
   }
 
   async signPsbt(psbtHex: string, psbtInputAccounts: PsbtInputAccounts[]): Promise<string> {
@@ -206,7 +209,7 @@ class UnisatConnector extends SatsConnector {
       };
     });
 
-    const signedPsbtHex = await this.getSource().signPsbt(psbtHex, {
+    const signedPsbtHex = await this.getSource()!.signPsbt(psbtHex, {
       autoFinalized: false,
       toSignInputs: toSignInputs
     });
