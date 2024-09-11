@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.2
+
+### Patch Changes
+
+- [#79](https://github.com/bob-collective/sats-wagmi/pull/79) [`b39ab778de554f5b9b1a58cc6f1676ba448a0148`](https://github.com/bob-collective/sats-wagmi/commit/b39ab778de554f5b9b1a58cc6f1676ba448a0148) Thanks [@gregdhill](https://github.com/gregdhill)! - fix: add missing clean-package dep
+
 ## 0.3.1
 
 ### Patch Changes
