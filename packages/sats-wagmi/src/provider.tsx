@@ -62,13 +62,17 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, queryClient, netw
 
       readyConnectors.push(unisat);
 
+      const bitkeep = new UnisatConnector(network, 'bitkeep');
+
+      readyConnectors.push(bitkeep);
+
+      const binancew3w = new UnisatConnector(network, 'binancew3w');
+
+      readyConnectors.push(binancew3w);
+
       const mmSnap = new MMSnapConnector(network);
 
       readyConnectors.push(mmSnap);
-
-      const bitkeep = new UnisatConnector(network, 'bitget');
-
-      readyConnectors.push(bitkeep);
 
       const leather = new LeatherConnector(network);
 
