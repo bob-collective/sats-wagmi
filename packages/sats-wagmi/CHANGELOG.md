@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.1
+
+### Patch Changes
+
+- [#77](https://github.com/bob-collective/sats-wagmi/pull/77) [`3eebfa117dbb380d6bd2f6ea5f4e141643bb475e`](https://github.com/bob-collective/sats-wagmi/commit/3eebfa117dbb380d6bd2f6ea5f4e141643bb475e) Thanks [@gregdhill](https://github.com/gregdhill)! - feat: add binance w3w support and fix bitget connector
+
 ## 0.3.0
 
 ### Minor Changes
