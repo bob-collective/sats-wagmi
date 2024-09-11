@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.3
+
+### Patch Changes
+
+- [#81](https://github.com/bob-collective/sats-wagmi/pull/81) [`d3961f2799a4db1e0d1bdb5cc4f903528339a476`](https://github.com/bob-collective/sats-wagmi/commit/d3961f2799a4db1e0d1bdb5cc4f903528339a476) Thanks [@gregdhill](https://github.com/gregdhill)! - fix: use clean-package config
+
 ## 0.3.2
 
 ### Patch Changes
