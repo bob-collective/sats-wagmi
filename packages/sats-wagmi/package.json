@@ -60,5 +60,6 @@
     "clean-package": "^2.2.0",
     "sats-connect": "^1.1.2",
     "@uidotdev/usehooks": "^2.4.1"
-  }
+  },
+  "clean-package": "../../clean-package.config.json"
 }
