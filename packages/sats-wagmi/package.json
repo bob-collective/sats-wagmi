@@ -57,6 +57,7 @@
     "bitcoin-address-validation": "^2.2.1",
     "bitcoinjs-lib": "^6.1.5",
     "bs58check": "^2.1.2",
+    "clean-package": "^2.2.0",
     "sats-connect": "^1.1.2",
     "@uidotdev/usehooks": "^2.4.1"
   }
