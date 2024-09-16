@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.4
+
+### Patch Changes
+
+- [#84](https://github.com/bob-collective/sats-wagmi/pull/84) [`77f7f1aa9832d2626d1f987e92d0c7dc00565e3a`](https://github.com/bob-collective/sats-wagmi/commit/77f7f1aa9832d2626d1f987e92d0c7dc00565e3a) Thanks [@gregdhill](https://github.com/gregdhill)! - chore: update bob-sdk
+
 ## 0.3.3
 
 ### Patch Changes
