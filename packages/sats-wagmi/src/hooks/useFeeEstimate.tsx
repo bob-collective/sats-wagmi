@@ -15,7 +15,6 @@ const useFeeEstimate = ({ query }: UseFeeEstimateProps = {}) => {
   const { network } = useSatsWagmi();
 
   return useQuery({
-    enabled: Boolean(feeRate),
     queryKey: ['sats-fee-estimate', network, feeRate?.toString()],
     queryFn: async () => {
       const feeEstimate = estimateTxFee(Number(feeRate));
