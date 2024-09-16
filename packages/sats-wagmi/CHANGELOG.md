@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.5
+
+### Patch Changes
+
+- [#86](https://github.com/bob-collective/sats-wagmi/pull/86) [`c86e7b334fb3e252b8997fcb2792f0564c0b856b`](https://github.com/bob-collective/sats-wagmi/commit/c86e7b334fb3e252b8997fcb2792f0564c0b856b) Thanks [@slavastartsev](https://github.com/slavastartsev)! - enable fee estimate query to throw error
+
 ## 0.3.4
 
 ### Patch Changes
