@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.7
+
+### Patch Changes
+
+- [#90](https://github.com/bob-collective/sats-wagmi/pull/90) [`53596d6bb3a2e77cbbd3f658a628c2e3ec9c30bf`](https://github.com/bob-collective/sats-wagmi/commit/53596d6bb3a2e77cbbd3f658a628c2e3ec9c30bf) Thanks [@gregdhill](https://github.com/gregdhill)! - fix: binancew3w provider
+
 ## 0.3.6
 
 ### Patch Changes
