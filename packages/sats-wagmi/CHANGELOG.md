@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.6
+
+### Patch Changes
+
+- [#88](https://github.com/bob-collective/sats-wagmi/pull/88) [`950a0409359be538bb4b0b498ab52e004919edfb`](https://github.com/bob-collective/sats-wagmi/commit/950a0409359be538bb4b0b498ab52e004919edfb) Thanks [@gregdhill](https://github.com/gregdhill)! - fix: update metamask snap network
+
 ## 0.3.5
 
 ### Patch Changes
