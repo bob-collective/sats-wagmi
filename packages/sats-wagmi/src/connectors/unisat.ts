@@ -71,7 +71,7 @@ declare global {
       unisat: UniSatBase & UniSatExt;
     };
     binancew3w: {
-      unisat: UniSatBase;
+      bitcoin: UniSatBase;
     };
   }
 }
@@ -111,7 +111,7 @@ class UnisatConnector extends SatsConnector {
       case 'bitkeep':
         return window?.bitkeep?.unisat || undefined;
       case 'binancew3w':
-        return window?.binancew3w?.unisat || undefined;
+        return window?.binancew3w?.bitcoin || undefined;
       case 'unisat':
         return window?.unisat || undefined;
     }
