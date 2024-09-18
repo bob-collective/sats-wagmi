@@ -187,8 +187,8 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3
       '@gobob/bob-sdk':
-        specifier: ^2.2.9
-        version: 2.2.9
+        specifier: ^2.3.3
+        version: 2.3.3
       '@metamask/providers':
         specifier: ^12.0.0
         version: 12.0.0
@@ -3020,8 +3020,8 @@ packages:
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
     dev: true
 
-  /@gobob/bob-sdk@2.2.9:
-    resolution: {integrity: sha512-Rtah8PQKdovGMcqZnv/dj5uar039jA/IxjSyeIUGlRGCDHV7KnkW22URcdyt5iCcMsnEPSclL+HFnuVzOJZeOA==}
+  /@gobob/bob-sdk@2.3.3:
+    resolution: {integrity: sha512-gA/OmP3B5bsOdosQF+gIffh1/c5NmMOD1EYTdTJDFBpz7wWxDiznIsXrrCoqbWC/B3/MxFaEE+0U8Gsb4za1kQ==}
     dependencies:
       '@scure/base': 1.1.8
       '@scure/btc-signer': 1.3.2
@@ -5716,7 +5716,7 @@ packages:
   /@types/node-fetch@2.6.11:
     resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
     dependencies:
-      '@types/node': 18.19.50
+      '@types/node': 22.5.4
       form-data: 4.0.0
     dev: true
 
@@ -5864,7 +5864,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 16.18.108
+      '@types/node': 22.5.4
     dev: true
     optional: true
 

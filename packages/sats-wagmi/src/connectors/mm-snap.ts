@@ -15,15 +15,6 @@ import { PsbtInputAccounts, SatsConnector } from './base';
 // https://github.com/bob-collective/bob-snap/blob/e34ab61def4ad65792d6150cd46af8c733a73c0d/packages/snap/src/interface.ts#L122-L125
 type WalletNetwork = 'main' | 'test';
 
-const getLibNetwork = (network: WalletNetwork): Network => {
-  switch (network) {
-    case 'main':
-      return Network.mainnet;
-    case 'test':
-      return Network.testnet;
-  }
-};
-
 const getSnapNetwork = (network: Network): WalletNetwork => {
   switch (network) {
     default:
@@ -103,13 +94,12 @@ class MMSnapConnector extends SatsConnector {
 
   constructor(network: Network) {
     super(network, 'metamask_snap', 'MetaMask', 'https://snaps.metamask.io/snap/npm/gobob/bob-snap/');
+    this.snapNetwork = getSnapNetwork(network);
     bitcoin.initEccLib(ecc);
     this.bip32 = BIP32Factory(ecc);
   }
 
   async connect(): Promise<void> {
-    this.snapNetwork = getSnapNetwork(this.network);
-
     try {
       const result: any = await ethereum.request({
         method: 'wallet_requestSnaps',
@@ -123,13 +113,11 @@ class MMSnapConnector extends SatsConnector {
       // eslint-disable-next-line no-console
       console.log('Using snap version:', result?.[snapId]?.version);
     } finally {
-      const mappedNetwork = getLibNetwork(this.snapNetwork);
+      const actualNetwork = await this.getNetworkInSnap();
 
-      if (mappedNetwork !== this.network) {
-        const expectedNetwork = getSnapNetwork(this.network);
-
+      if (actualNetwork === '' || actualNetwork !== this.snapNetwork) {
         // Switch in case current network is wrong
-        await this.updateNetworkInSnap(expectedNetwork);
+        await this.setNetworkInSnap(this.snapNetwork);
       }
 
       this.extendedPublicKey = await this.getExtendedPublicKey();
@@ -160,25 +148,14 @@ class MMSnapConnector extends SatsConnector {
       return this.extendedPublicKey;
     }
 
-    try {
-      return (await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: {
-          snapId,
-          request: {
-            method: 'btc_getPublicExtendedKey',
-            params: {
-              network: this.snapNetwork,
-              scriptType: DEFAULT_SCRIPT_TYPE
-            }
-          }
-        }
-      })) as ExtendedPublicKey;
-    } catch (err: any) {
-      const error = new SnapError(err?.message || 'Get extended public key failed');
-
-      throw error;
-    }
+    return await this.snapRequest<ExtendedPublicKey>({
+      method: 'btc_getPublicExtendedKey',
+      params: {
+        network: this.snapNetwork,
+        scriptType: DEFAULT_SCRIPT_TYPE
+      },
+      errMsg: 'Get extended public key failed'
+    });
   }
 
   getPublicKey(): string | undefined {
@@ -199,79 +176,42 @@ class MMSnapConnector extends SatsConnector {
   }
 
   async signMessage(message: string): Promise<string> {
-    try {
-      return (await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: {
-          snapId,
-          request: {
-            method: 'btc_signMessage',
-            params: {
-              message,
-              hdPath: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork)
-            }
-          }
-        }
-      })) as string;
-    } catch (err: any) {
-      const error = new SnapError(err?.message || 'Could not sign message');
-
-      throw error;
-    }
+    return await this.snapRequest<string>({
+      method: 'btc_signMessage',
+      params: {
+        message,
+        hdPath: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork)
+      },
+      errMsg: 'Could not sign message'
+    });
   }
 
   async signInput(inputIndex: number, psbt: Psbt) {
-    try {
-      const psbtBase64 = await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: {
-          snapId,
-          request: {
-            method: 'btc_signInput',
-            params: {
-              psbt: psbt.toBase64(),
-              network: this.snapNetwork,
-              scriptType: DEFAULT_SCRIPT_TYPE,
-              inputIndex,
-              path: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork)
-            }
-          }
-        }
-      });
+    const psbtBase64 = await this.snapRequest<string>({
+      method: 'btc_signInput',
+      params: {
+        psbt: psbt.toBase64(),
+        network: this.snapNetwork,
+        scriptType: DEFAULT_SCRIPT_TYPE,
+        inputIndex,
+        path: getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork)
+      },
+      errMsg: 'Sign input failed'
+    });
 
-      if (!psbtBase64) {
-        throw new Error('');
-      }
-
-      return bitcoin.Psbt.fromBase64(psbtBase64 as string);
-    } catch (err: any) {
-      const error = new SnapError(err?.message || 'Sign Input failed');
-
-      throw error;
-    }
+    return bitcoin.Psbt.fromBase64(psbtBase64);
   }
 
   async getMasterFingerprint() {
-    try {
-      return await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: {
-          snapId,
-          request: {
-            method: 'btc_getMasterFingerprint'
-          }
-        }
-      });
-    } catch (err: any) {
-      const error = new SnapError(err?.message || 'Snap get master fingerprint failed');
-
-      throw error;
-    }
+    return await this.snapRequest<string>({
+      method: 'btc_getMasterFingerprint',
+      errMsg: 'Snap get master fingerprint failed'
+    });
   }
 
   async signPsbt(psbtHex: string, _psbtInputAccounts: PsbtInputAccounts[]): Promise<string> {
     const psbt = bitcoin.Psbt.fromHex(psbtHex);
-    const masterFingerprint = Buffer.from((await this.getMasterFingerprint()) as any, 'hex');
+    const masterFingerprint = Buffer.from(await this.getMasterFingerprint(), 'hex');
     const publicKey = Buffer.from(this.publicKey!, 'hex');
     const bip32Path = getDefaultBip32Path(DEFAULT_SCRIPT_TYPE, this.snapNetwork);
 
@@ -286,50 +226,61 @@ class MMSnapConnector extends SatsConnector {
         ])
     );
 
-    try {
-      const psbtBase64 = (await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: {
-          snapId,
-          request: {
-            method: 'btc_signPsbt',
-            params: {
-              psbt: psbt.toBase64(),
-              network: this.snapNetwork,
-              scriptType: DEFAULT_SCRIPT_TYPE,
-              opts: {
-                autoFinalize: false
-              }
-            }
-          }
+    const psbtBase64 = await this.snapRequest<string>({
+      method: 'btc_signPsbt',
+      params: {
+        psbt: psbt.toBase64(),
+        network: this.snapNetwork,
+        scriptType: DEFAULT_SCRIPT_TYPE,
+        opts: {
+          autoFinalize: false
         }
-      })) as string;
+      },
+      errMsg: 'Could not sign psbt'
+    });
 
-      return hex.encode(base64.decode(psbtBase64));
-    } catch (err: any) {
-      const error = new SnapError(err?.message || 'Could not sign psbt');
-
-      throw error;
-    }
+    return hex.encode(base64.decode(psbtBase64));
   }
 
-  async updateNetworkInSnap(expectedNetwork: WalletNetwork) {
+  async getNetworkInSnap() {
+    return await this.snapRequest<WalletNetwork | ''>({
+      method: 'btc_network',
+      params: {
+        action: 'get'
+      },
+      errMsg: 'Snap get network failed'
+    });
+  }
+
+  async setNetworkInSnap(expectedNetwork: WalletNetwork) {
+    return await this.snapRequest({
+      method: 'btc_network',
+      params: {
+        action: 'set',
+        network: expectedNetwork
+      },
+      errMsg: 'Snap set network failed'
+    });
+  }
+
+  private async snapRequest<T>(req: {
+    method: string;
+    params?: unknown[] | Record<string, unknown>;
+    errMsg: string;
+  }): Promise<T> {
     try {
-      return await ethereum.request({
+      return (await ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
           snapId,
           request: {
-            method: 'btc_network',
-            params: {
-              action: 'set',
-              network: expectedNetwork
-            }
+            method: req.method,
+            params: req.params
           }
         }
-      });
+      })) as T;
     } catch (err: any) {
-      const error = new SnapError(err?.message || 'Snap set network failed');
+      const error = new SnapError(err?.message || req.errMsg);
 
       throw error;
     }
