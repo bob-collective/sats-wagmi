@@ -1,3 +1,5 @@
+'use client';
+
 import { Network as BitcoinNetwork } from 'bitcoin-address-validation';
 import { FC, ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
