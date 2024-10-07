@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.8
+
+### Patch Changes
+
+- [#96](https://github.com/bob-collective/sats-wagmi/pull/96) [`7d00f38d7445105cef37e7ec4b231718fa679bc8`](https://github.com/bob-collective/sats-wagmi/commit/7d00f38d7445105cef37e7ec4b231718fa679bc8) Thanks [@slavastartsev](https://github.com/slavastartsev)! - Add use client directive
+
 ## 0.3.7
 
 ### Patch Changes
