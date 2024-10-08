@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.9
+
+### Patch Changes
+
+- [`8af286526d94893c3a41f71cdf7e62b9d7872f7b`](https://github.com/bob-collective/sats-wagmi/commit/8af286526d94893c3a41f71cdf7e62b9d7872f7b) Thanks [@slavastartsev](https://github.com/slavastartsev)! - Replace hook library to be compatible with ssr (#99)
+
 ## 0.3.8
 
 ### Patch Changes
