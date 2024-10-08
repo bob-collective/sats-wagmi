@@ -38,15 +38,9 @@ type SatsWagmiConfigProps = {
   children: ReactNode;
   network?: BitcoinNetwork;
   queryClient: QueryClient;
-  ssr?: boolean;
 };
 
-const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({
-  children,
-  queryClient,
-  network = BitcoinNetwork.mainnet,
-  ssr = false
-}) => {
+const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, queryClient, network = BitcoinNetwork.mainnet }) => {
   const [connectors, setConnectors] = useState<SatsConnector[]>([]);
   const [connector, setCurrentConnector] = useState<SatsConnector>();
 
@@ -54,7 +48,7 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({
     LocalStorageKeys.CONNECTOR,
     undefined,
     {
-      initializeWithValue: !ssr
+      initializeWithValue: typeof window !== 'undefined'
     }
   );
 
