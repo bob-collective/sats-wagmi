@@ -1,3 +1,5 @@
+'use client';
+
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { EsploraClient } from '@gobob/bob-sdk';
 

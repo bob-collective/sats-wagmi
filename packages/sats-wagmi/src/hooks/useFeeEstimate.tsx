@@ -1,3 +1,5 @@
+'use client';
+
 import { estimateTxFee } from '@gobob/bob-sdk';
 import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
 
