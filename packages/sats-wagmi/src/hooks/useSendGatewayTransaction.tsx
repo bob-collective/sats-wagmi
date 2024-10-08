@@ -1,3 +1,5 @@
+'use client';
+
 import { Optional, useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { GatewayQuoteParams, GatewaySDK } from '@gobob/bob-sdk';
 

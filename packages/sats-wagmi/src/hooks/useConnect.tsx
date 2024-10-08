@@ -1,3 +1,5 @@
+'use client';
+
 import { useMutation } from '@tanstack/react-query';
 
 import { SatsConnector } from '../connectors/base';
