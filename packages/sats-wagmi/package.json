@@ -36,9 +36,9 @@
     "postpack": "clean-package restore"
   },
   "peerDependencies": {
+    "@tanstack/react-query": ">=5.0.0",
     "react": ">=18",
-    "react-dom": ">=18",
-    "@tanstack/react-query": ">=5.0.0"
+    "react-dom": ">=18"
   },
   "devDependencies": {
     "@types/async-retry": "^1.4.8",
@@ -59,7 +59,7 @@
     "bs58check": "^2.1.2",
     "clean-package": "^2.2.0",
     "sats-connect": "^1.1.2",
-    "@uidotdev/usehooks": "^2.4.1"
+    "usehooks-ts": "^3.1.0"
   },
   "clean-package": "../../clean-package.config.json"
 }

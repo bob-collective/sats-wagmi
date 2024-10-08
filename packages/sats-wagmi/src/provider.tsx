@@ -2,7 +2,7 @@
 
 import { Network as BitcoinNetwork } from 'bitcoin-address-validation';
 import { FC, ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLocalStorage } from 'usehooks-ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { LeatherConnector, MMSnapConnector, UnisatConnector, XverseConnector } from './connectors';
@@ -38,13 +38,25 @@ type SatsWagmiConfigProps = {
   children: ReactNode;
   network?: BitcoinNetwork;
   queryClient: QueryClient;
+  ssr?: boolean;
 };
 
-const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, queryClient, network = BitcoinNetwork.mainnet }) => {
+const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({
+  children,
+  queryClient,
+  network = BitcoinNetwork.mainnet,
+  ssr = false
+}) => {
   const [connectors, setConnectors] = useState<SatsConnector[]>([]);
   const [connector, setCurrentConnector] = useState<SatsConnector>();
 
-  const [storedConnector, setStoredConnector] = useLocalStorage<string | undefined>(LocalStorageKeys.CONNECTOR);
+  const [storedConnector, setStoredConnector] = useLocalStorage<string | undefined>(
+    LocalStorageKeys.CONNECTOR,
+    undefined,
+    {
+      initializeWithValue: !ssr
+    }
+  );
 
   useEffect(() => {
     const init = () => {
