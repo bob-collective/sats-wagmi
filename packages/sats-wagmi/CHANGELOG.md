@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.10
+
+### Patch Changes
+
+- [#101](https://github.com/bob-collective/sats-wagmi/pull/101) [`f473d23e8121f488b6234df59b4daead4addccfa`](https://github.com/bob-collective/sats-wagmi/commit/f473d23e8121f488b6234df59b4daead4addccfa) Thanks [@danielsimao](https://github.com/danielsimao)! - fix: faulty window access mm-snap
+
 ## 0.3.9
 
 ### Patch Changes
