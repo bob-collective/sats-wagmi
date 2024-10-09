@@ -82,8 +82,6 @@ declare global {
   }
 }
 
-const { ethereum } = window;
-
 const snapId = 'npm:@gobob/bob-snap';
 
 // TODO: distinguish between payment and ordinals address
@@ -101,7 +99,7 @@ class MMSnapConnector extends SatsConnector {
 
   async connect(): Promise<void> {
     try {
-      const result: any = await ethereum.request({
+      const result: any = await window.ethereum.request({
         method: 'wallet_requestSnaps',
         params: {
           [snapId]: {
@@ -132,7 +130,7 @@ class MMSnapConnector extends SatsConnector {
   }
 
   async isReady(): Promise<boolean> {
-    const snaps = await ethereum.request({
+    const snaps = await window.ethereum.request({
       method: 'wallet_getSnaps'
     });
 
@@ -269,7 +267,7 @@ class MMSnapConnector extends SatsConnector {
     errMsg: string;
   }): Promise<T> {
     try {
-      return (await ethereum.request({
+      return (await window.ethereum.request({
         method: 'wallet_invokeSnap',
         params: {
           snapId,
