@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.14
+
+### Patch Changes
+
+- [#114](https://github.com/bob-collective/sats-wagmi/pull/114) [`14796d5cc04529b9ebe8cc7a3405cc3d855d98a3`](https://github.com/bob-collective/sats-wagmi/commit/14796d5cc04529b9ebe8cc7a3405cc3d855d98a3) Thanks [@danielsimao](https://github.com/danielsimao)! - feat: update balance hook
+
 ## 0.3.13
 
 ### Patch Changes
