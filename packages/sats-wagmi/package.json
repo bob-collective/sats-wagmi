@@ -10,17 +10,7 @@
     "btc wallet connector hooks",
     "btc wallet connector config"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "main": "src/index.ts",
   "files": [
     "dist"
   ],
@@ -41,7 +31,9 @@
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "clean": "rimraf dist .turbo",
     "typecheck": "tsc --noEmit",
-    "build": "tsup src/index.ts --dts"
+    "build": "tsup src/index.ts --dts",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore"
   },
   "peerDependencies": {
     "@tanstack/react-query": ">=5.0.0",
