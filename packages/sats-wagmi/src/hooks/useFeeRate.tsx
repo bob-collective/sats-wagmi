@@ -7,7 +7,7 @@ import { INTERVAL } from '../utils';
 import { useSatsWagmi } from '../provider';
 
 // Confirmation target for fee estimation in Bitcoin blocks
-export const CONFIRMATION_TARGET = 3;
+export const CONFIRMATION_TARGET = 6;
 
 type UseFeeRateProps = {
   confirmations?: number;
