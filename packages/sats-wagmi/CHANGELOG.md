@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.11
+
+### Patch Changes
+
+- [#106](https://github.com/bob-collective/sats-wagmi/pull/106) [`ec7940eed0ebc2cd565b17a05768165c8d807db7`](https://github.com/bob-collective/sats-wagmi/commit/ec7940eed0ebc2cd565b17a05768165c8d807db7) Thanks [@danielsimao](https://github.com/danielsimao)! - chore: export confirmations target
+
 ## 0.3.10
 
 ### Patch Changes
