@@ -13,21 +13,22 @@ type UseUTXOSProps = {
     UndefinedInitialDataOptions<UTXO[], Error, UTXO[], (string | number | undefined)[]>,
     'queryKey' | 'queryFn'
   >;
+  confirmed?: boolean;
 };
 
-const useUtxos = ({ query }: UseUTXOSProps = {}) => {
+const useUtxos = ({ query, confirmed }: UseUTXOSProps = {}) => {
   const { address } = useAccount();
   const { network } = useSatsWagmi();
 
   return useQuery({
-    queryKey: ['sats-utxos', address, network],
+    queryKey: ['sats-utxos', confirmed ? 'confirmed' : 'all', address, network],
     queryFn: async () => {
       if (!address) {
         throw new Error('Failed to get utxos');
       }
       const esploraClient = new EsploraClient(network);
 
-      return esploraClient.getAddressUtxos(address);
+      return esploraClient.getAddressUtxos(address, confirmed);
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,

@@ -3,10 +3,11 @@
 import { estimateTxFee } from '@gobob/bob-sdk';
 import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
 
+import { CONFIRMATION_TARGET } from '../constants';
 import { INTERVAL } from '../utils';
 import { useSatsWagmi } from '../provider';
 
-import { CONFIRMATION_TARGET, useFeeRate } from './useFeeRate';
+import { useFeeRate } from './useFeeRate';
 import { useAccount } from './useAccount';
 
 type UseFeeEstimateProps = {
@@ -26,7 +27,7 @@ const useFeeEstimate = ({
   query
 }: UseFeeEstimateProps = {}) => {
   const { address, publicKey } = useAccount();
-  const { data: feeRate } = useFeeRate({ confirmations: confirmationTarget });
+  const { data: feeRate } = useFeeRate({ confirmationTarget });
   const { network } = useSatsWagmi();
 
   const enabled = Boolean(feeRate && address && (query?.enabled !== undefined ? query.enabled : true));
