@@ -22,6 +22,7 @@ const useBalance = (props: UseBalanceProps = {}) => {
   return useQuery({
     enabled: Boolean(address),
     queryKey: ['sats-balance', network, address],
+    refetchInterval: INTERVAL.SECONDS_30,
     queryFn: async () => {
       if (!address) {
         return { confirmed: BigInt(0), unconfirmed: BigInt(0), total: BigInt(0) };
@@ -33,7 +34,6 @@ const useBalance = (props: UseBalanceProps = {}) => {
 
       return { confirmed: BigInt(confirmed), unconfirmed: BigInt(unconfirmed), total: BigInt(total) };
     },
-    refetchInterval: INTERVAL.SECONDS_30,
     ...props
   });
 };
