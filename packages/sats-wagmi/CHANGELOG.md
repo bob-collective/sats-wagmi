@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.12
+
+### Patch Changes
+
+- [#108](https://github.com/bob-collective/sats-wagmi/pull/108) [`2f36f86d77cb9c71acebaf603e3e12f56c0f41cb`](https://github.com/bob-collective/sats-wagmi/commit/2f36f86d77cb9c71acebaf603e3e12f56c0f41cb) Thanks [@danielsimao](https://github.com/danielsimao)! - feat: update sdk version
+
 ## 0.3.11
 
 ### Patch Changes
