@@ -107,7 +107,9 @@ function Balance() {
     <div>
       <h2>Balance</h2>
 
-      <div>Balance: {!!account_?.value && formatBtc(account_.value)}</div>
+      <div>Balance (confirmed): {!!account_?.confirmed && formatBtc(account_.confirmed)}</div>
+      <div>Balance (unconfirmed): {!!account_?.unconfirmed && formatBtc(account_.unconfirmed)}</div>
+      <div>Balance (total): {!!account_?.total && formatBtc(account_.total)}</div>
     </div>
   );
 }
