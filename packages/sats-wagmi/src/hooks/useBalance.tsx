@@ -8,9 +8,7 @@ import { INTERVAL } from '../utils';
 
 import { useAccount } from './useAccount';
 
-type GetBalanceReturnType = {
-  value: bigint;
-};
+type GetBalanceReturnType = { confirmed: bigint; unconfirmed: bigint; total: bigint };
 
 type UseBalanceProps = Omit<
   UseQueryOptions<GetBalanceReturnType, unknown, GetBalanceReturnType, (string | undefined)[]>,
@@ -23,17 +21,19 @@ const useBalance = (props: UseBalanceProps = {}) => {
 
   return useQuery({
     enabled: Boolean(address),
-    queryKey: ['sats-balance', address],
+    queryKey: ['sats-balance', network, address],
     queryFn: async () => {
-      if (!address) return { value: BigInt(0) };
+      if (!address) {
+        return { confirmed: BigInt(0), unconfirmed: BigInt(0), total: BigInt(0) };
+      }
 
       const esploraClient = new EsploraClient(network);
 
-      const balance = await esploraClient.getBalance(address);
+      const { confirmed, unconfirmed, total } = await esploraClient.getBalance(address);
 
-      return { value: BigInt(balance) };
+      return { confirmed: BigInt(confirmed), unconfirmed: BigInt(unconfirmed), total: BigInt(total) };
     },
-    refetchInterval: INTERVAL.SECONDS_10,
+    refetchInterval: INTERVAL.SECONDS_30,
     ...props
   });
 };
