@@ -3,43 +3,47 @@
 import { estimateTxFee } from '@gobob/bob-sdk';
 import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
 
-import { CONFIRMATION_TARGET } from '../constants';
-import { INTERVAL } from '../utils';
 import { useSatsWagmi } from '../provider';
+import { INTERVAL } from '../utils';
 
-import { useFeeRate } from './useFeeRate';
 import { useAccount } from './useAccount';
+import { useFeeRate } from './useFeeRate';
 
-type UseFeeEstimateProps = {
+type UseFeeEstimateReturnType = { amount: bigint; feeRate: number };
+
+type UseFeeEstimateProps<TData = UseFeeEstimateReturnType> = {
   query?: Omit<
-    UndefinedInitialDataOptions<bigint, Error, bigint, (string | number | undefined)[]>,
+    UndefinedInitialDataOptions<UseFeeEstimateReturnType, Error, TData, (string | number | undefined)[]>,
     'queryKey' | 'queryFn'
   >;
   amount?: number;
   opReturnData?: string;
   confirmationTarget?: number;
+  feeRate?: number;
 };
 
-const useFeeEstimate = ({
+function useFeeEstimate<TData = UseFeeEstimateReturnType>({
   amount,
   opReturnData,
-  confirmationTarget = CONFIRMATION_TARGET,
+  feeRate: feeRateProp,
   query
-}: UseFeeEstimateProps = {}) => {
+}: UseFeeEstimateProps<TData> = {}) {
   const { address, publicKey } = useAccount();
-  const { data: feeRate } = useFeeRate({ confirmationTarget });
+  const { data: feeRateData } = useFeeRate();
   const { network } = useSatsWagmi();
 
-  const enabled = Boolean(feeRate && address && (query?.enabled !== undefined ? query.enabled : true));
+  const enabled = Boolean(feeRateData && address && (query?.enabled !== undefined ? query.enabled : true));
+
+  const feeRate = feeRateProp || feeRateData?.esplora[6];
 
   return useQuery({
-    queryKey: ['sats-fee-estimate', amount, address, opReturnData, network, feeRate?.toString(), confirmationTarget],
+    queryKey: ['sats-fee-estimate', amount, address, opReturnData, network, feeRate],
     queryFn: async () => {
-      if (!address || !feeRate || !publicKey) {
+      if (!address || !feeRate) {
         throw new Error('Failed to estimate fee');
       }
 
-      return estimateTxFee(address, amount, publicKey, opReturnData, Number(feeRate), confirmationTarget);
+      return { feeRate, amount: await estimateTxFee(address, amount, publicKey, opReturnData, feeRate) };
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -47,7 +51,7 @@ const useFeeEstimate = ({
     ...query,
     enabled
   });
-};
+}
 
 export { useFeeEstimate };
 export type { UseFeeEstimateProps };
