@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.15
+
+### Patch Changes
+
+- [#117](https://github.com/bob-collective/sats-wagmi/pull/117) [`d7e3df26435a63828bb26264d345ea76a8d7f789`](https://github.com/bob-collective/sats-wagmi/commit/d7e3df26435a63828bb26264d345ea76a8d7f789) Thanks [@danielsimao](https://github.com/danielsimao)! - feat: improve fee estimate
+
 ## 0.3.14
 
 ### Patch Changes
