@@ -187,9 +187,8 @@ class UnisatConnector extends SatsConnector {
 
   async signPsbt(psbtHex: string, psbtInputAccounts: PsbtInputAccounts[]): Promise<string> {
     // https://docs.unisat.io/dev/unisat-developer-service/unisat-wallet#signpsbt
-    const publicKey = this.getPublicKey();
 
-    if (!publicKey) {
+    if (!this.publicKey) {
       throw new Error('Something went wrong while connecting');
     }
 
@@ -204,7 +203,7 @@ class UnisatConnector extends SatsConnector {
     const toSignInputs = inputs.map((index) => {
       return {
         index,
-        publicKey,
+        publicKey: this.publicKey,
         disableTweakSigner: true
       };
     });

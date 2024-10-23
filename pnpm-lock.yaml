@@ -188,7 +188,7 @@ importers:
         version: 2.2.3
       '@gobob/bob-sdk':
         specifier: ^3.0.0
-        version: 3.0.0
+        version: 3.0.3
       '@metamask/providers':
         specifier: ^12.0.0
         version: 12.0.0
@@ -3020,8 +3020,8 @@ packages:
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
     dev: true
 
-  /@gobob/bob-sdk@3.0.0:
-    resolution: {integrity: sha512-DEmcczsOJvZLT/5pL+nUJx4cvqaHo7pL+9bLs9bwZ5i3WbTRaJrTnHFnEtjiqFWeoTHXhqUmKOZGK0ytDAkupw==}
+  /@gobob/bob-sdk@3.0.3:
+    resolution: {integrity: sha512-apn6nir4A4wgPLsTZ7RUBJjqRVmAORdu6SDLz4RdEQ8Wrh3Gy35CV0kX28zkMkNIUI9QKSDXJCDsYrDQMYnBKQ==}
     dependencies:
       '@scure/base': 1.1.8
       '@scure/btc-signer': 1.3.2

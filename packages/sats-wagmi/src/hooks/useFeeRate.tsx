@@ -1,35 +1,49 @@
 'use client';
 
-import { EsploraClient } from '@gobob/bob-sdk';
+import { EsploraClient, EsploraFeeEstimates, MempoolClient, MempoolRecomendedFee } from '@gobob/bob-sdk';
 import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query';
 
-import { CONFIRMATION_TARGET } from '../constants';
 import { INTERVAL } from '../utils';
 import { useSatsWagmi } from '../provider';
 
-type UseFeeRateProps = {
-  confirmationTarget?: number;
-  query?: Omit<UndefinedInitialDataOptions<bigint, Error, bigint, (string | number)[]>, 'queryKey' | 'queryFn'>;
+type FeeRateReturnType = {
+  memPool: Record<keyof MempoolRecomendedFee, number>;
+  esplora: Record<keyof EsploraFeeEstimates, number>;
 };
 
-const useFeeRate = ({ query, confirmationTarget = CONFIRMATION_TARGET }: UseFeeRateProps = {}) => {
+type UseFeeRateProps<TData = FeeRateReturnType> = {
+  rate?: keyof FeeRateReturnType;
+  query?: Omit<
+    UndefinedInitialDataOptions<FeeRateReturnType, Error, TData, (string | number)[]>,
+    'queryKey' | 'queryFn'
+  >;
+};
+
+function useFeeRate<TData = FeeRateReturnType>({ query }: UseFeeRateProps<TData> = {}) {
   const { network } = useSatsWagmi();
 
   return useQuery({
-    queryKey: ['sats-fee-rate', confirmationTarget, network],
+    queryKey: ['sats-fee-rate', network],
     queryFn: async () => {
+      const memPoolClient = new MempoolClient(network);
       const esploraClient = new EsploraClient(network);
 
-      const feeRate = await esploraClient.getFeeEstimate(confirmationTarget);
+      const [memPoolFeeRate, esploraFeeRate] = await Promise.all([
+        memPoolClient.getRecommendedFees(),
+        esploraClient.getFeeEstimates()
+      ]);
 
-      return BigInt(Math.ceil(feeRate));
+      return {
+        memPool: memPoolFeeRate,
+        esplora: esploraFeeRate
+      };
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchInterval: INTERVAL.MINUTE,
     ...query
   });
-};
+}
 
 export { useFeeRate };
-export type { UseFeeRateProps };
+export type { UseFeeRateProps, FeeRateReturnType };
