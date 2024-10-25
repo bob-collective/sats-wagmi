@@ -1,6 +1,7 @@
 import { Network } from 'bitcoin-address-validation';
 
 import { bitgetLogo } from '../assets/bitget';
+import { unisatLogo } from '../assets/unisat';
 
 import { PsbtInputAccounts, SatsConnector } from './base';
 
@@ -91,7 +92,8 @@ const metadata: Record<WalletSource, { id: string; name: string; homepage: strin
   unisat: {
     id: 'unisat',
     name: 'UniSat',
-    homepage: 'https://unisat.io/'
+    homepage: 'https://unisat.io/',
+    icon: unisatLogo
   }
 };
 
