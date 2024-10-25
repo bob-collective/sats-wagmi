@@ -9,6 +9,8 @@ import {
 import { base64, hex } from '@scure/base';
 import validate, { Network } from 'bitcoin-address-validation';
 
+import { xverseLogo } from '../assets/xverse';
+
 import { PsbtInputAccounts, SatsConnector } from './base';
 
 const getWalletNetwork = (network: Network) => ({
@@ -24,7 +26,7 @@ declare global {
 
 class XverseConnector extends SatsConnector {
   constructor(network: Network) {
-    super(network, 'xverse', 'Xverse', 'https://www.xverse.app/');
+    super(network, 'xverse', 'Xverse', 'https://www.xverse.app/', xverseLogo);
   }
 
   async connect(): Promise<void> {
