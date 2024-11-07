@@ -1,4 +1,4 @@
-import { Network } from 'bitcoin-address-validation';
+import { AddressType, Network } from 'bitcoin-address-validation';
 
 import { okxLogo } from '../assets/okx';
 
@@ -157,7 +157,7 @@ class OKXConnector extends SatsConnector {
       return {
         index,
         publicKey,
-        disableTweakSigner: true
+        disableTweakSigner: this.getAddressType(this.paymentAddress!) !== AddressType.p2tr
       };
     });
 
