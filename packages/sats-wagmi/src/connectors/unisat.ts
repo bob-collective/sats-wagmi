@@ -1,4 +1,4 @@
-import { Network } from 'bitcoin-address-validation';
+import { AddressType, Network } from 'bitcoin-address-validation';
 
 import { bitgetLogo } from '../assets/bitget';
 
@@ -200,11 +200,16 @@ class UnisatConnector extends SatsConnector {
         inputs.push(index);
       }
     }
+
+    if (!this.paymentAddress) {
+      throw new Error('No payment address specified');
+    }
+
     const toSignInputs = inputs.map((index) => {
       return {
         index,
         publicKey: this.publicKey,
-        disableTweakSigner: true
+        disableTweakSigner: this.getAddressType(this.paymentAddress!) !== AddressType.p2tr
       };
     });
 
