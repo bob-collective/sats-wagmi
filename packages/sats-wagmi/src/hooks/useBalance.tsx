@@ -1,7 +1,7 @@
 'use client';
 
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
-import { EsploraClient, OrdinalsClient } from '@gobob/bob-sdk';
+import { EsploraClient, OrdinalsClient, OutPoint } from '@gobob/bob-sdk';
 import { AddressType, getAddressInfo } from 'bitcoin-address-validation';
 
 import { useSatsWagmi } from '../provider';
@@ -35,19 +35,34 @@ const useBalance = (props: UseBalanceProps = {}) => {
       const addressInfo = getAddressInfo(address);
 
       if (addressInfo.type === AddressType.p2tr) {
-        const [{ confirmed, unconfirmed, total }, inscribed, runic] = await Promise.all([
-          esploraClient.getBalance(address),
-          ordinalsClient.getOutputsFromAddress(address, 'inscribed'),
-          ordinalsClient.getOutputsFromAddress(address, 'runic')
+        const [outputs, cardinalOutputs] = await Promise.all([
+          esploraClient.getAddressUtxos(address),
+          // cardinal = return UTXOs not containing inscriptions or runes
+          ordinalsClient.getOutputsFromAddress(address, 'cardinal')
         ]);
 
-        const inscribedOutputsTotal = inscribed.reduce((acc, output) => acc + output.value, 0);
-        const runicOutputsTotal = runic.reduce((acc, output) => acc + output.value, 0);
+        const cardinalOutputsSet = new Set(cardinalOutputs.map((output) => output.outpoint));
+
+        const total = outputs.reduce((acc, output) => {
+          if (cardinalOutputsSet.has(OutPoint.toString(output))) {
+            return acc + output.value;
+          }
+
+          return acc;
+        }, 0);
+
+        const confirmed = outputs.reduce((acc, output) => {
+          if (cardinalOutputsSet.has(OutPoint.toString(output)) && output.confirmed) {
+            return acc + output.value;
+          }
+
+          return acc;
+        }, 0);
 
         return {
-          confirmed: BigInt(confirmed - inscribedOutputsTotal - runicOutputsTotal),
-          unconfirmed: BigInt(unconfirmed),
-          total: BigInt(total - inscribedOutputsTotal - runicOutputsTotal)
+          confirmed: BigInt(confirmed),
+          unconfirmed: BigInt(total - confirmed),
+          total: BigInt(total)
         };
       } else {
         const { confirmed, unconfirmed, total } = await esploraClient.getBalance(address);
