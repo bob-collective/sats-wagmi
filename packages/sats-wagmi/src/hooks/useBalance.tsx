@@ -1,7 +1,8 @@
 'use client';
 
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
-import { EsploraClient } from '@gobob/bob-sdk';
+import { EsploraClient, OrdinalsClient } from '@gobob/bob-sdk';
+import { AddressType, getAddressInfo } from 'bitcoin-address-validation';
 
 import { useSatsWagmi } from '../provider';
 import { INTERVAL } from '../utils';
@@ -29,10 +30,31 @@ const useBalance = (props: UseBalanceProps = {}) => {
       }
 
       const esploraClient = new EsploraClient(network);
+      const ordinalsClient = new OrdinalsClient(network);
 
-      const { confirmed, unconfirmed, total } = await esploraClient.getBalance(address);
+      const addressInfo = getAddressInfo(address);
 
-      return { confirmed: BigInt(confirmed), unconfirmed: BigInt(unconfirmed), total: BigInt(total) };
+      if (addressInfo.type === AddressType.p2tr) {
+        // cardinal = return UTXOs not containing inscriptions or runes
+        const outputsFromAddress = await ordinalsClient.getOutputsFromAddress(address, 'cardinal');
+        const taprootBalance = outputsFromAddress.reduce((acc, cur) => {
+          return acc + cur.value;
+        }, 0);
+
+        return {
+          confirmed: BigInt(taprootBalance),
+          unconfirmed: BigInt(0),
+          total: BigInt(taprootBalance)
+        };
+      } else {
+        const { confirmed, unconfirmed, total } = await esploraClient.getBalance(address);
+
+        return {
+          confirmed: BigInt(confirmed),
+          unconfirmed: BigInt(unconfirmed),
+          total: BigInt(total)
+        };
+      }
     },
     ...props
   });
