@@ -35,16 +35,19 @@ const useBalance = (props: UseBalanceProps = {}) => {
       const addressInfo = getAddressInfo(address);
 
       if (addressInfo.type === AddressType.p2tr) {
-        // cardinal = return UTXOs not containing inscriptions or runes
-        const outputsFromAddress = await ordinalsClient.getOutputsFromAddress(address, 'cardinal');
-        const taprootBalance = outputsFromAddress.reduce((acc, cur) => {
-          return acc + cur.value;
-        }, 0);
+        const [{ confirmed, unconfirmed, total }, inscribed, runic] = await Promise.all([
+          esploraClient.getBalance(address),
+          ordinalsClient.getOutputsFromAddress(address, 'inscribed'),
+          ordinalsClient.getOutputsFromAddress(address, 'runic')
+        ]);
+
+        const inscribedOutputsTotal = inscribed.reduce((acc, output) => acc + output.value, 0);
+        const runicOutputsTotal = runic.reduce((acc, output) => acc + output.value, 0);
 
         return {
-          confirmed: BigInt(taprootBalance),
-          unconfirmed: BigInt(0),
-          total: BigInt(taprootBalance)
+          confirmed: BigInt(confirmed - inscribedOutputsTotal - runicOutputsTotal),
+          unconfirmed: BigInt(unconfirmed),
+          total: BigInt(total - inscribedOutputsTotal - runicOutputsTotal)
         };
       } else {
         const { confirmed, unconfirmed, total } = await esploraClient.getBalance(address);
