@@ -119,7 +119,7 @@ abstract class SatsConnector {
     return this.ordinalsAddress;
   }
 
-  /** Convience wrapper around the getAddressInfo function
+  /** Convenience wrapper around the getAddressInfo function
    * @param address - The address to get the type of.
    * @returns The address type of the address.
    */
