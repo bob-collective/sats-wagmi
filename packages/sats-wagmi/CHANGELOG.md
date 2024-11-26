@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.17
+
+### Patch Changes
+
+- [#125](https://github.com/bob-collective/sats-wagmi/pull/125) [`90701422a4d072c0b8b2e4b369afd250c8704e43`](https://github.com/bob-collective/sats-wagmi/commit/90701422a4d072c0b8b2e4b369afd250c8704e43) Thanks [@slavastartsev](https://github.com/slavastartsev)! - Enable tweak signer for taproot address
+
 ## 0.3.16
 
 ### Patch Changes
