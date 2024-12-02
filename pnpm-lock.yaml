@@ -176,7 +176,7 @@ importers:
         version: 7.3.0(@swc/core@1.7.23)(ts-node@10.9.2)(typescript@5.5.4)
       turbo:
         specifier: latest
-        version: 2.3.2
+        version: 2.3.3
       typescript:
         specifier: ^5.2.2
         version: 5.5.4
@@ -248,11 +248,11 @@ importers:
         specifier: 5.0.5
         version: 5.0.5
       '@tanstack/react-query':
-        specifier: '>=5.45.1'
-        version: 5.54.1(react@18.3.1)
+        specifier: '>=5.62.0'
+        version: 5.62.0(react@18.3.1)
       '@tanstack/react-query-persist-client':
         specifier: 5.0.5
-        version: 5.0.5(@tanstack/react-query@5.54.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 5.0.5(@tanstack/react-query@5.62.0)(react-dom@18.3.1)(react@18.3.1)
       idb-keyval:
         specifier: ^6.2.1
         version: 6.2.1
@@ -268,7 +268,7 @@ importers:
     devDependencies:
       '@tanstack/react-query-devtools':
         specifier: 5.0.5
-        version: 5.0.5(@tanstack/react-query@5.54.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 5.0.5(@tanstack/react-query@5.62.0)(react-dom@18.3.1)(react@18.3.1)
       '@types/react':
         specifier: '>=18.3.1'
         version: 18.3.5
@@ -5373,6 +5373,10 @@ packages:
 
   /@tanstack/query-core@5.54.1:
     resolution: {integrity: sha512-hKS+WRpT5zBFip21pB6Jx1C0hranWQrbv5EJ7qPoiV5MYI3C8rTCqWC9DdBseiPT1JgQWh8Y55YthuYZNiw3Xw==}
+    dev: false
+
+  /@tanstack/query-core@5.62.0:
+    resolution: {integrity: sha512-sx38bGrqF9bop92AXOvzDr0L9fWDas5zXdPglxa9cuqeVSWS7lY6OnVyl/oodfXjgOGRk79IfCpgVmxrbHuFHg==}
 
   /@tanstack/query-devtools@5.0.5:
     resolution: {integrity: sha512-xjuOhOrrO50sPoJ4WG9yPe3imQ0Ds/nutnmwdTqjM2ZTIkflh//p7q2iB6IxFBY9sB106h+PULlma8sgTuOKAQ==}
@@ -5391,7 +5395,7 @@ packages:
       '@tanstack/query-persist-client-core': 5.0.5
     dev: false
 
-  /@tanstack/react-query-devtools@5.0.5(@tanstack/react-query@5.54.1)(react-dom@18.3.1)(react@18.3.1):
+  /@tanstack/react-query-devtools@5.0.5(@tanstack/react-query@5.62.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-vJyS7HXx2zw43TQjm3m4uyaNUgGizOpK2SZL9Lc+DZSuhFbuZ55UEYJTz8yudCbHdLXlkuVZwo6TWWOhXWJFeA==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.5
@@ -5399,12 +5403,12 @@ packages:
       react-dom: ^18.2.0
     dependencies:
       '@tanstack/query-devtools': 5.0.5
-      '@tanstack/react-query': 5.54.1(react@18.3.1)
+      '@tanstack/react-query': 5.62.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: true
 
-  /@tanstack/react-query-persist-client@5.0.5(@tanstack/react-query@5.54.1)(react-dom@18.3.1)(react@18.3.1):
+  /@tanstack/react-query-persist-client@5.0.5(@tanstack/react-query@5.62.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-V/jIKdiw0WyJYpnzwnKS+O19jgJPWSBDzvx9qFaXAm98Jnt+lGWFBZdUR0MgY2ufM1fbeejXTjcorgwqjc3kaA==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.5
@@ -5412,7 +5416,7 @@ packages:
       react-dom: ^18.2.0
     dependencies:
       '@tanstack/query-persist-client-core': 5.0.5
-      '@tanstack/react-query': 5.54.1(react@18.3.1)
+      '@tanstack/react-query': 5.62.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: false
@@ -5423,6 +5427,15 @@ packages:
       react: ^18.2.0
     dependencies:
       '@tanstack/query-core': 5.54.1
+      react: 18.3.1
+    dev: false
+
+  /@tanstack/react-query@5.62.0(react@18.3.1):
+    resolution: {integrity: sha512-tj2ltjAn2a3fs+Dqonlvs6GyLQ/LKVJE2DVSYW+8pJ3P6/VCVGrfqv5UEchmlP7tLOvvtZcOuSyI2ooVlR5Yqw==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      '@tanstack/query-core': 5.62.0
       react: 18.3.1
 
   /@testing-library/dom@10.4.0:
@@ -13901,64 +13914,64 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /turbo-darwin-64@2.3.2:
-    resolution: {integrity: sha512-B1lS/UqjXNsG+kx1uzJNwXMuw2i5wavcyNy8opvSLjfuECdsqQU9B1wPqkSTU+mZjFTJcEfiGKyJ/I2EVk8vdw==}
+  /turbo-darwin-64@2.3.3:
+    resolution: {integrity: sha512-bxX82xe6du/3rPmm4aCC5RdEilIN99VUld4HkFQuw+mvFg6darNBuQxyWSHZTtc25XgYjQrjsV05888w1grpaA==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64@2.3.2:
-    resolution: {integrity: sha512-XHeuEdk9tHaw2Bsr3rTzFtZyldeSyagDZkOSPIJ1zioavMjWEFPA75vdgy4j8ns96EBpZMaPXVEnODuEHfiZfQ==}
+  /turbo-darwin-arm64@2.3.3:
+    resolution: {integrity: sha512-DYbQwa3NsAuWkCUYVzfOUBbSUBVQzH5HWUFy2Kgi3fGjIWVZOFk86ss+xsWu//rlEAfYwEmopigsPYSmW4X15A==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64@2.3.2:
-    resolution: {integrity: sha512-oKDsO5+flqpPx5tNLFGVUYpJ/sBc3KvaGpyNzXl2u3epzyafgblFKWMG5YsSiU1ruouPpcC6YG5SN5chA7Abfg==}
+  /turbo-linux-64@2.3.3:
+    resolution: {integrity: sha512-eHj9OIB0dFaP6BxB88jSuaCLsOQSYWBgmhy2ErCu6D2GG6xW3b6e2UWHl/1Ho9FsTg4uVgo4DB9wGsKa5erjUA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64@2.3.2:
-    resolution: {integrity: sha512-luyvTl3wQ1hF+ljK7ljH4TL7rg4pmx5pQ2mzvfMvPo5eaLuKr/tImmbdH6/vr56iffUIISkIsLVhVxgZeAsUOw==}
+  /turbo-linux-arm64@2.3.3:
+    resolution: {integrity: sha512-NmDE/NjZoDj1UWBhMtOPmqFLEBKhzGS61KObfrDEbXvU3lekwHeoPvAMfcovzswzch+kN2DrtbNIlz+/rp8OCg==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64@2.3.2:
-    resolution: {integrity: sha512-yw7BnTU5cE7GdUnZEW3jIAI98hh4dcWk+Jwza8X7CXpxpill2zteq7VPf+a/B3o/xm+oVXzLmP83YP91Bm0SaA==}
+  /turbo-windows-64@2.3.3:
+    resolution: {integrity: sha512-O2+BS4QqjK3dOERscXqv7N2GXNcqHr9hXumkMxDj/oGx9oCatIwnnwx34UmzodloSnJpgSqjl8iRWiY65SmYoQ==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64@2.3.2:
-    resolution: {integrity: sha512-Hgp6V7jaIYlDcy5xpKN+XXyYCf5afT690GmXcEsMoUawd5dStvZe0QHWcGxuqho497BAlx0XGAWftm0KelNePA==}
+  /turbo-windows-arm64@2.3.3:
+    resolution: {integrity: sha512-dW4ZK1r6XLPNYLIKjC4o87HxYidtRRcBeo/hZ9Wng2XM/MqqYkAyzJXJGgRMsc0MMEN9z4+ZIfnSNBrA0b08ag==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo@2.3.2:
-    resolution: {integrity: sha512-vCJPoy8/3KkqY3W0cX2nrwhmtBQSZhEyrVgeJ4NlEXwGxu5vNRQDyV6se5VVAQMwfBsBJswlo87B7ai7Dr1MpQ==}
+  /turbo@2.3.3:
+    resolution: {integrity: sha512-DUHWQAcC8BTiUZDRzAYGvpSpGLiaOQPfYXlCieQbwUvmml/LRGIe3raKdrOPOoiX0DYlzxs2nH6BoWJoZrj8hA==}
     hasBin: true
     optionalDependencies:
-      turbo-darwin-64: 2.3.2
-      turbo-darwin-arm64: 2.3.2
-      turbo-linux-64: 2.3.2
-      turbo-linux-arm64: 2.3.2
-      turbo-windows-64: 2.3.2
-      turbo-windows-arm64: 2.3.2
+      turbo-darwin-64: 2.3.3
+      turbo-darwin-arm64: 2.3.3
+      turbo-linux-64: 2.3.3
+      turbo-linux-arm64: 2.3.3
+      turbo-windows-64: 2.3.3
+      turbo-windows-arm64: 2.3.3
     dev: true
 
   /tween-functions@1.2.0:
