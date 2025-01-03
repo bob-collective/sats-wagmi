@@ -153,11 +153,14 @@ class OKXConnector extends SatsConnector {
       }
     }
 
+    const addressType = this.getAddressType(this.paymentAddress!);
+
     const toSignInputs = inputs.map((index) => {
       return {
         index,
-        publicKey,
-        disableTweakSigner: this.getAddressType(this.paymentAddress!) !== AddressType.p2tr
+        ...(addressType === AddressType.p2tr
+          ? { address: this.paymentAddress, disableTweakSigner: false }
+          : { publicKey: publicKey, disableTweakSigner: true })
       };
     });
 
