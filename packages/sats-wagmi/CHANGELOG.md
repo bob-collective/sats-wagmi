@@ -1,5 +1,13 @@
 # @gobob/sats-wagmi
 
+## 0.3.18
+
+### Patch Changes
+
+- [#136](https://github.com/bob-collective/sats-wagmi/pull/136) [`41e282bb2ed525cc2f9ffc8e899e093f2158c363`](https://github.com/bob-collective/sats-wagmi/commit/41e282bb2ed525cc2f9ffc8e899e093f2158c363) Thanks [@slavastartsev](https://github.com/slavastartsev)! - fix: signing psbt with taproot address with okx wallet
+
+- [#138](https://github.com/bob-collective/sats-wagmi/pull/138) [`e37daf30367cabeff08b7133d24bea62d61a1bf5`](https://github.com/bob-collective/sats-wagmi/commit/e37daf30367cabeff08b7133d24bea62d61a1bf5) Thanks [@slavastartsev](https://github.com/slavastartsev)! - chore: add tests for connectors
+
 ## 0.3.17
 
 ### Patch Changes
