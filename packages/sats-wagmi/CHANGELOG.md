@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.20
+
+### Patch Changes
+
+- [#140](https://github.com/bob-collective/sats-wagmi/pull/140) [`c26174db37833f2a41d6c54904a64adac790c5f2`](https://github.com/bob-collective/sats-wagmi/commit/c26174db37833f2a41d6c54904a64adac790c5f2) Thanks [@slavastartsev](https://github.com/slavastartsev)! - chore: bump bob-sdk version
+
 ## 0.3.19
 
 ### Patch Changes
