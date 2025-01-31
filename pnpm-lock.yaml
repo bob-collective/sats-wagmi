@@ -187,8 +187,8 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3
       '@gobob/bob-sdk':
-        specifier: ^3.1.3
-        version: 3.1.3(typescript@5.5.4)
+        specifier: ^3.1.4
+        version: 3.1.4
       '@metamask/providers':
         specifier: ^12.0.0
         version: 12.0.0
@@ -1657,8 +1657,8 @@ packages:
   '@floating-ui/utils@0.2.7':
     resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
 
-  '@gobob/bob-sdk@3.1.3':
-    resolution: {integrity: sha512-6Cb+zfybptdxpbFLe0zPniiyyZ0Qn6PzHyp6aY1Ij95zrXAtJoMK6tgzMaqrnZdel0G6kERW3mlB3k5n0UAuXA==}
+  '@gobob/bob-sdk@3.1.4':
+    resolution: {integrity: sha512-qW5P9VC/XMgGG0vuDAay8i94aGbY++dMD1zaSsnuf81nQCUHGJPnF0tMDmZozPQOp5krBrA+DGipEcNTnkARUw==}
 
   '@hapi/hoek@9.3.0':
     resolution: {integrity: sha512-/c6rf4UJlmHlC9b5BaNvzAcFv7HZ2QHaV0D4/HNlBdvFnvQq8RI4kYdhyPCl7Xj+oWvTWQ8ujhqS53LIgAe6KQ==}
@@ -1803,6 +1803,9 @@ packages:
 
   '@juggle/resize-observer@3.4.0':
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+
+  '@magiceden-oss/runestone-lib@1.0.2':
+    resolution: {integrity: sha512-C4XoE7tHxxaWQNzovBIEndXGrTesotshnKQA8DXlnoVDvriD6G26ezUoj9AlEb2UAPbEijSga4Dtwd86Z0a1jg==}
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -3477,11 +3480,6 @@ packages:
   better-path-resolve@1.0.0:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
-
-  big-varuint-js@0.2.1:
-    resolution: {integrity: sha512-79JS5h53rP+L2CyXbpgMaLPKyHek7VAglJbug3KWR3CBtBabkcvxaU0PSMTBP9jBhDYoJsz5f+Ow20XSp8n52A==}
-    peerDependencies:
-      typescript: ^5.0.0
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -6573,11 +6571,6 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
-  runestone-js@0.3.0:
-    resolution: {integrity: sha512-8ddhFrIZ/H1zKJ5HcSWsFabexunF4Dk7odjJQFy92ZZ+3Oxicf/VndZdP1pnPu4y2R54ZO3rP2tkPtrQgqFhxA==}
-    peerDependencies:
-      typescript: ^5.0.0
-
   rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
 
@@ -9156,17 +9149,16 @@ snapshots:
 
   '@floating-ui/utils@0.2.7': {}
 
-  '@gobob/bob-sdk@3.1.3(typescript@5.5.4)':
+  '@gobob/bob-sdk@3.1.4':
     dependencies:
+      '@magiceden-oss/runestone-lib': 1.0.2
       '@scure/base': 1.1.8
       '@scure/btc-signer': 1.3.2
       bitcoin-address-validation: 2.2.3
       bitcoinjs-lib: 6.1.6
       ethers: 6.13.2
-      runestone-js: 0.3.0(typescript@5.5.4)
     transitivePeerDependencies:
       - bufferutil
-      - typescript
       - utf-8-validate
 
   '@hapi/hoek@9.3.0': {}
@@ -9418,6 +9410,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@juggle/resize-observer@3.4.0': {}
+
+  '@magiceden-oss/runestone-lib@1.0.2': {}
 
   '@manypkg/find-root@1.1.0':
     dependencies:
@@ -11559,10 +11553,6 @@ snapshots:
   better-path-resolve@1.0.0:
     dependencies:
       is-windows: 1.0.2
-
-  big-varuint-js@0.2.1(typescript@5.5.4):
-    dependencies:
-      typescript: 5.5.4
 
   binary-extensions@2.3.0: {}
 
@@ -15342,11 +15332,6 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
-
-  runestone-js@0.3.0(typescript@5.5.4):
-    dependencies:
-      big-varuint-js: 0.2.1(typescript@5.5.4)
-      typescript: 5.5.4
 
   rxjs@7.8.1:
     dependencies:
