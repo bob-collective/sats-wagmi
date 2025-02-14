@@ -46,13 +46,25 @@ abstract class SatsConnector {
   /** Override for the Esplora API */
   esploraBaseUrl?: string;
 
-  constructor(network: Network, id: string, name: string, homepage: string, icon?: string, esploraBaseUrl?: string) {
+  /** Campaign id for tracking */
+  campaignId?: string;
+
+  constructor(
+    network: Network,
+    id: string,
+    name: string,
+    homepage: string,
+    icon?: string,
+    esploraBaseUrl?: string,
+    campaignId?: string
+  ) {
     this.network = network;
     this.id = id;
     this.name = name;
     this.homepage = homepage;
     this.icon = icon;
     this.esploraBaseUrl = esploraBaseUrl;
+    this.campaignId = campaignId;
   }
 
   /** Connect to the wallet */

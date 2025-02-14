@@ -38,7 +38,7 @@ const useSendGatewayTransaction = ({ gatewaySDK, toChain = 'bob', ...props }: Us
 
       const gatewayClient = gatewaySDK || new GatewaySDK(toChain);
 
-      const params = {
+      const params: GatewayQuoteParams = {
         ...props,
         fromChain: props.fromChain || 'bitcoin',
         fromToken: props.fromToken || 'BTC',
@@ -48,7 +48,8 @@ const useSendGatewayTransaction = ({ gatewaySDK, toChain = 'bob', ...props }: Us
         fromUserAddress: btcAddress,
         fromUserPublicKey: btcPublicKey,
         toUserAddress: evmAddress,
-        amount: Number(value)
+        amount: Number(value),
+        campaignId: connector.campaignId
       };
       const quote = await gatewayClient.getQuote(params);
 
