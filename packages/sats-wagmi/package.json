@@ -1,6 +1,6 @@
 {
   "name": "@gobob/sats-wagmi",
-  "version": "0.3.21-alpha0",
+  "version": "0.3.20",
   "description": "Bob sats-wagmi.",
   "homepage": "https://github.com/bob-collective/sats-wagmi#readme",
   "license": "MIT",
