@@ -6,8 +6,6 @@ import { PsbtInputAccounts, SatsConnector } from './base';
 
 type WalletNetwork = 'livenet' | 'testnet';
 
-const SIGNET_CHAIN = 'BITCOIN_SIGNET';
-
 type WalletChain =
   | 'BITCOIN_MAINNET'
   | 'BITCOIN_TESTNET'
@@ -15,25 +13,6 @@ type WalletChain =
   | 'BITCOIN_SIGNET'
   | 'FRACTAL_BITCOIN_MAINNET'
   | 'FRACTAL_BITCOIN_TESTNET';
-
-const getLibNetwork = (network: WalletNetwork): Network => {
-  switch (network) {
-    case 'livenet':
-      return Network.mainnet;
-    case 'testnet':
-      return Network.testnet;
-  }
-};
-
-const getUnisatNetwork = (network: Network): WalletNetwork => {
-  switch (network) {
-    default:
-    case Network.mainnet:
-      return 'livenet';
-    case Network.testnet:
-      return 'testnet';
-  }
-};
 
 type AccountsChangedEvent = (event: 'accountsChanged', handler: (accounts: Array<string>) => void) => void;
 
@@ -46,6 +25,7 @@ type UniSatBase = {
   requestAccounts: () => Promise<string[]>;
   getAccounts: () => Promise<string[]>;
   getNetwork: () => Promise<WalletNetwork>;
+  getChain: () => Promise<WalletChain>;
   switchNetwork: (network: WalletNetwork) => Promise<void>;
   switchChain: (network: WalletChain) => Promise<void>;
   getPublicKey: () => Promise<string>;
@@ -131,15 +111,7 @@ class UnisatConnector extends SatsConnector {
   async connect(): Promise<void> {
     const walletSource = this.getSource()!;
 
-    const network = await walletSource.getNetwork();
-    const mappedNetwork = getLibNetwork(network);
-
-    if (mappedNetwork !== this.network) {
-      const expectedNetwork = getUnisatNetwork(this.network);
-
-      // await walletSource.switchNetwork(expectedNetwork);
-      await walletSource.switchChain('BITCOIN_SIGNET');
-    }
+    await walletSource.switchChain('BITCOIN_SIGNET');
 
     const [accounts, publicKey] = await Promise.all([walletSource.requestAccounts(), walletSource.getPublicKey()]);
 
