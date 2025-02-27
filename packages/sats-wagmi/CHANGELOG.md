@@ -1,6 +1,6 @@
 # @gobob/sats-wagmi
 
-## 0.3.21
+## 0.3.21-alpha1
 
 ### Patch Changes
 
