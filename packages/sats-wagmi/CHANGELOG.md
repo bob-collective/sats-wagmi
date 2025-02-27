@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.21-alpha1
+
+### Patch Changes
+
+- [#143](https://github.com/bob-collective/sats-wagmi/pull/143) [`8a7aeeffd51f519adb1e161a6539950e58692ec9`](https://github.com/bob-collective/sats-wagmi/commit/8a7aeeffd51f519adb1e161a6539950e58692ec9) Thanks [@slavastartsev](https://github.com/slavastartsev)! - Feat/unisat signet
+
 ## 0.3.20
 
 ### Patch Changes
