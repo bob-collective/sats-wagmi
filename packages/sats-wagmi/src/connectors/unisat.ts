@@ -6,6 +6,16 @@ import { PsbtInputAccounts, SatsConnector } from './base';
 
 type WalletNetwork = 'livenet' | 'testnet';
 
+const SIGNET_CHAIN = 'BITCOIN_SIGNET';
+
+type WalletChain =
+  | 'BITCOIN_MAINNET'
+  | 'BITCOIN_TESTNET'
+  | 'BITCOIN_TESTNET4'
+  | 'BITCOIN_SIGNET'
+  | 'FRACTAL_BITCOIN_MAINNET'
+  | 'FRACTAL_BITCOIN_TESTNET';
+
 const getLibNetwork = (network: WalletNetwork): Network => {
   switch (network) {
     case 'livenet':
@@ -37,6 +47,7 @@ type UniSatBase = {
   getAccounts: () => Promise<string[]>;
   getNetwork: () => Promise<WalletNetwork>;
   switchNetwork: (network: WalletNetwork) => Promise<void>;
+  switchChain: (network: WalletChain) => Promise<void>;
   getPublicKey: () => Promise<string>;
   getBalance: () => Promise<Balance>;
   signMessage: (msg: string, type?: 'ecdsa' | 'bip322-simple') => Promise<string>;
@@ -126,7 +137,8 @@ class UnisatConnector extends SatsConnector {
     if (mappedNetwork !== this.network) {
       const expectedNetwork = getUnisatNetwork(this.network);
 
-      await walletSource.switchNetwork(expectedNetwork);
+      // await walletSource.switchNetwork(expectedNetwork);
+      await walletSource.switchChain('BITCOIN_SIGNET');
     }
 
     const [accounts, publicKey] = await Promise.all([walletSource.requestAccounts(), walletSource.getPublicKey()]);
