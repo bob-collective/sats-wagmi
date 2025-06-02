@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.21
+
+### Patch Changes
+
+- [#145](https://github.com/bob-collective/sats-wagmi/pull/145) [`637e732000501dbc73035b7b51310e1ee544a2c0`](https://github.com/bob-collective/sats-wagmi/commit/637e732000501dbc73035b7b51310e1ee544a2c0) Thanks [@danielsimao](https://github.com/danielsimao)! - feat: add leap wallet
+
 ## 0.3.21-alpha1
 
 ### Patch Changes
