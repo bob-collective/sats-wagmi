@@ -5,7 +5,7 @@ import { FC, ReactNode, createContext, useCallback, useContext, useEffect, useSt
 import { useLocalStorage } from 'usehooks-ts';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { LeatherConnector, MMSnapConnector, UnisatConnector, XverseConnector } from './connectors';
+import { LeatherConnector, MMSnapConnector, UnisatConnector, XverseConnector, LeapConnector } from './connectors';
 import { SatsConnector } from './connectors/base';
 import { LocalStorageKeys } from './constants';
 import { OKXConnector } from './connectors/okx';
@@ -85,6 +85,10 @@ const SatsWagmiConfig: FC<SatsWagmiConfigProps> = ({ children, queryClient, netw
       const leather = new LeatherConnector(network);
 
       readyConnectors.push(leather);
+
+      const leap = new LeapConnector(network);
+
+      readyConnectors.push(leap);
 
       setConnectors(readyConnectors);
     };
