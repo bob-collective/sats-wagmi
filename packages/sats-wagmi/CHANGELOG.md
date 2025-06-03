@@ -1,5 +1,11 @@
 # @gobob/sats-wagmi
 
+## 0.3.23
+
+### Patch Changes
+
+- [#148](https://github.com/bob-collective/sats-wagmi/pull/148) [`cd9e21e8de3defaf337099b2a3a376ca6b594bf5`](https://github.com/bob-collective/sats-wagmi/commit/cd9e21e8de3defaf337099b2a3a376ca6b594bf5) Thanks [@slavastartsev](https://github.com/slavastartsev)! - chore: remove comment
+
 ## 0.3.21
 
 ### Patch Changes
