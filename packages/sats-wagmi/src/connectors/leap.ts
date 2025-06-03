@@ -4,7 +4,6 @@ import { SatsConnector } from './base';
 
 declare global {
   interface Window {
-    /* @ts-ignore */
     leapBitcoin: any;
   }
 }
